@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8"> 
+    <!-- Plotly.js -->
+    <!-- the local version requires the use of Plotly.newPlot -->
+    <script src="scripts/plotly-2.18.2.min.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+    <script src="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script> -->
+    <!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+    <link rel="stylesheet" type="text/css" href="vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/queries.css">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="index.html">Home</a></li> <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="#">About us</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Consultancy</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">Fourier Transforms - looking at the frequencies</h1>
+
+        <p>
+            We have introduced frequencies and even tried to assess qualitatively the appearance of a signal in terms of
+            "higher" and "lower" frequencies. But how can we quantitatively assess the frequencies of a signal? If we
+            could fit an analytic signal, or series of them, to a form a spike then we could fit any digital signal as a
+            digital signal is, in essence, a series of spikes of varying amplitude at distinct measurement points. It
+            turns out that a series of sine (or cosine) waves with various amplitude, frequency, and phase can be fit
+            together to from a spike. Specifically, one could sum cosine waves of zero phase, constant amplitude, and
+            varying frequencies to generate a spike at t=0. Then all that is required to phase shift the component
+            cosines to move the spike in time.
+        </p>
+
+        <pre><code class="language-python">short_time = np.linspace(-1.5,1.5,101) # generate symmetric time axis around 0
+FNyq = 1/(2*(short_time[1] - short_time[0])) # get the Nyquist frequency
+freq_interval = 0.01 # define frequency interval to use
+freqs = np.arange(freq_interval, FNyq+freq_interval, freq_interval) # generate a list of frequencies to make sine waves for, up to Nyquist
+evr = 50
+
+# set up array of signals and legends
+combined_signal = np.cos(2 * np.pi * freqs[0] * short_time)
+ys_cos=[combined_signal.copy()]
+leg_cos = ['Frequency: '+str(freqs[0])]
+
+# loop over frequencies
+for i in range(1,len(freqs)):
+    combined_signal += np.cos(2 * np.pi * freqs[i] * short_time)
+    if i%evr==0: # only take a set number of intervals for plotting
+        ys_cos.append(combined_signal/i)
+        leg_cos.append(str(freqs[i]))
+
+if i%evr!=0:
+    ys_cos.append(combined_signal/i)
+    leg_cos.append(str(freqs[i]))
+        
+# produce interactive plot
+ts_cos = [short_time]*len(ys_cos)       
+Plotting(ys_cos, ts_cos, leg_cos, slider_labels=leg_cos, title='Building a spike', slider_prefix="Sum of frequencies to: ", slider_suffix="Hz", first_visible=False, mode='lines')</code></pre>
+
+        <div id="plot3" , class="knowledge_plot"></div>
+
+        <pre><code class="language-python">inds = range(1,len(ys_cos),4)
+for i in inds:
+    plt.plot(ts_cos[i], ys_cos[i])
+plt.legend(['Frequency: '+leg_cos[i] for i in inds])</code></pre>
+
+        <img src="resources/myImgs/Chart_FTSE 100.png" alt="chart of the FTSE 100 stock index" class="knowledge_img">
+
+        <p class="knowledge_p">
+            This means that any digital signal can be approximated by a series of cosines of varying amplitudes,
+            frequencies, and phases. This is known as a Fourier series. The fitted amplitudes, frequencies, and phases
+            can now be assessed to determine how strong each frequency is represented in the signal. For instance, one
+            would expect a good fit for a sine wave with a period of a year to data relating to average temperatures
+            over time for the UK.<br><br>
+            We can do this because, assuming there are no infinity data points in our series, we only have finite
+            discountinuities. This is one of the Dirichlet conditions that must be met to eb able to represent a signal
+            as a Fourier series. What would this look like mathematically?<br><br>
+            $$
+            s(t) = \frac{a_{0}}{2} + \sum^{\infty}_{n=1}a_{n}\cos(2\pi n t/T+\theta_{n})
+            $$
+            <br>
+            Note that we have a coefficient out front of $\frac{a_{0}}{2}$ which accounts for the average of the signal.
+            For instance if we wanted to fit a flat, non-zero response then $a_{0}$ would correspond to twice the
+            average of the signal and all other coefficients would be zero. We can also write this equation in terms of
+            sines and cosines without any phase term as sine and cosine form an orthogonal set:<br><br>
+            $$
+            s(t) = \frac{a_{0}}{2} + \sum^{\infty}_{n=1}b_{n}\cos(2\pi n t/T) + c_{n}\sin(2\pi n t/T)
+            $$
+            <br>
+            Where $ina_{n} = \sqrt{b_{n}^{2} + c_{n}^{2}}$in and $in\theta_{n} =
+            \tan^{-1}\left(-\frac{c_{n}}{b_{n}}\right)$in.<br><br>
+            This is a representation of a real valued series as a Fourier Series, however we can also extend this to
+            complex valued signals as well by exchanging sines and cosines for a complex exponential:<br><br>
+            $$
+            s(t) = \sum^{\infty}_{n=-\infty}a_{n}e^{2i\pi n t/T}
+            $$
+            <br>
+            However, if we have infintesimally small separations between the discrete frequencies then we can think of
+            this series in terms of an integral:<br><br>
+            In practice it turns out that it is rather difficult to accurately assess frequencies close to the Nyquist
+            frequency so a "rule of thumb" is applied by many practioners as to what frequencies can be recorded
+            accurately. Although these rules of thumb vary, many would assume that frequencies measured between 90% and
+            100% of the Nyquist frequency too inaccurate for further analysis. This is compounded by the fact that many
+            signals are typically bounded by windowing functions that impose their own spectrum on the recorded signal
+            (this will be covered in the section on convolution).
+        </p>
+    </div>
+
+    <div class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+            style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This work is
+        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+          Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+      </div>
+    
+      
+</body>
+
+<script src="scripts/plotly_test.js"></script>
+
+<!-- use this to run the code syntax highlighting in highlight.js -->
+<!-- <script>hljs.highlightAll();</script> -->
+<!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+<script src="scripts/prism.js"></script>
+</html>

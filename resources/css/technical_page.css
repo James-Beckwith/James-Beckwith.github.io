@@ -1,0 +1,33 @@
+html {
+  background-color: #595554;
+}
+
+body {
+  /* line-height: 1.5;
+    font-family: 'Inter', sans-serif; */
+  background-color: #595554;
+}
+
+/* RGBA(90,166,225,1)	  datajab blue light */
+/* RGBA(35,76,133,1)  datajab blue dark */
+/* RGBA(62,62,64,1) chalky gray */
+h1 {
+  font-size: 32px;
+  /*   font-weight: 700; It will not make much difference from default style Bold is 700 only*/
+  color: black;
+  margin-bottom: 32px;
+  letter-spacing: -.5px;
+}
+
+.main-container {
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+  /* TODO change this to be reactive to the screen width */
+  width: min(max-content, max(min-content, 50pc));
+  width: 90%;
+  margin: 10pc auto;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  gap: 24px;
+}

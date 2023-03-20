@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="vendors/css/ionicons.min.css">
+<link rel="stylesheet" type="text/css" href="resources/css/style2.css">
+<link rel="stylesheet" type="text/css" href="resources/css/topic_masters_accordian.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/queries.css">
+
+<body>
+  <nav>
+    <div class="row">
+      <!-- ul is an unordered list which should contain li list elements -->
+      <ul class="main-nav js--main-nav">
+          <li><a href="index.html">Home</a></li> <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+          <li><a herf="#">About us</a></li>
+          <li><a herf="#">Education</a></li>
+          <li><a herf="#">Consultancy</a></li>
+          <li><a herf="#">Resources</a></li>
+      </ul>
+      <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+      </div>
+  </nav>
+
+  <div class="accordion">
+    <h1>Time Series Analysis</h1>
+
+    <!-- The <details> HTML element creates a disclosure widget in which information is visible only when the widget is toggled into an "open" state. 
+  A summary or label must be provided using the <summary> element. -->
+    <!-- A disclosure widget is typically presented onscreen using a small triangle which rotates (or twists) to indicate open/closed status, with a label next to the triangle.
+     The contents of the <summary> element are used as the label for the disclosure widget  -->
+    <!-- You can use CSS to style the disclosure widget, and you can programmatically open and close the widget by setting/removing its open attribute. 
+     Unfortunately, at this time there's no built-in way to animate the transition between open and closed. -->
+
+    <p>
+      Time series analysis is the analysis of a series of data that has been collected over time. Typically it is
+      collected at regular intervals but it need not be. Time Series Analysis is a specific instance of Digital Series
+      Analysis. Digital Series Analysis is the analysis of any series of data that is recorded over a defined space, an
+      example of a space being "time" in Time Series Analysis, but another common space is physical distance.<br>One key
+      characteristic of most, if not all, digital series is that neighbouring measurements are correlated. This might be
+      so obvious that you've never thought about it technical terms before but the temperature tomorrow is likely to be
+      similar to the temperature today for example.
+    </p>
+
+    <p>
+      In the following drop down menus you'll find links to pages that will guide you through understanding various
+      aspects of Digital Series Analysis. Included are code cells written in python so you can re-create the plots and
+      analysis methods.
+    </p>
+
+    <details class="item">
+      <summary class="title">
+        <div class="number">
+          01
+        </div>
+        Digital Series Analysis basics
+      </summary>
+      <ol>
+        <li><a href="intro_DSA.html">An Introduction to Digital Series Analysis</a></li>
+        <li><a href="intro_nyquist.html">The Nyquist frequency and aliasing</a></li>
+        <li><a href="intro_fourier_transforms.html">Fourier transforms and the frequency domain</a></li>
+      </ol>
+    </details>
+
+    <details class="item">
+      <summary class="title">
+        <div class="number">
+          02
+        </div>
+        Fourier transform and filtering
+      </summary>
+      <ol>
+        <li><a href="intro_fourier_transforms.html">Fourier transforms and the frequency domain</a></li>
+      </ol>
+    </details>
+
+    <details class="item">
+      <summary class="title">
+        <div class="number">
+          03
+        </div>
+        Time-frequency transforms - Having your cake and eating it too?
+      </summary>
+      <ol>
+      </ol>
+    </details>
+
+  </div>
+
+  <div class="license">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+        style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This work is
+    licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+      Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="scripts/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8"> 
+    <!-- Plotly.js -->
+    <!-- the local version requires the use of Plotly.newPlot -->
+    <script src="scripts/plotly-2.18.2.min.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+    <script src="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script> -->
+    <!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+    <link rel="stylesheet" type="text/css" href="vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/queries.css">
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="index.html">Home</a></li> <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="#">About us</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Consultancy</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">Digital Series Analysis basics</h1>
+
+        <h2 class="knowledge_h2">Basic characteristics of digital signals</h2>
+
+        <p class="knowledge_p">
+            Digital signals are measurements of some real world phenomenon but unlike those phenomena they are not
+            continuous, they are snapshots taken at specific time intervals. It is important to know some of the basic
+            characteristics of these digital signals to avoid some common pitfalls when further interpreting or
+            analysing them. We'll start by looking at a 1-dimensional time series and some of the basic attributes that
+            they have
+            but the theory can be extended to any number of dimensions. We'll see later an example of a 2D digital
+            series.
+            One other thing to note is that unless stated otherwise we will assume that the series is regularly sampled
+            such
+            that each data point is measured at a fixed distance (in whatever measurement untis are appropriate) from
+            the next sample point. We will touch on irregularly sampled data in a later notebook. <br><br>
+            A digital signal itself is remarkably simple in how many attributes it has, which is essentially 1, the
+            number of samples. Any transformation we care to do with the signal can be applied without knowing any
+            information
+            other than how many samples are int he signal. All other information can be seen as "meta-data", which is
+            information about the signal but not an inherent characteristic of the signal. This may change how we label
+            certain axes and the units used but the underlying algorithms should be agnostic of the units. Only in
+            advanced modelling where, for instance, the time of the recorded event is used within the algorithm to
+            correlate to
+            other, external, datasets will this meta-data make an appreciable difference in how the algorithms and
+            transformations we will investigate work. <br><br>
+            Having said all that, the meta-data that should accompany a digital series is extremely important as it is
+            the
+            context around the digital series. Without context, any analysis and interpretation of the signal could not
+            any
+            meaningful conclusions, making it of limited use in a real world setting. So, let's now look at some common,
+            and
+            important, meta-data that should accompany any digital series. I'll also list some common synonyms of these
+            terms, but please bear in mind that the terminology varies not only between different industries/fields but
+            also within
+            them too.
+        </p>
+
+        <ul class="knowledge_ul">
+            <li class="knowledge_li">
+                Sampling interval/recording interval/sample interval - This is the distance between two sample points in
+                the
+                units used to record the data. For instance if we recorded the temperature every second then the
+                subsequent
+                time series would have a sampling interval of 1 second.
+            </li>
+            <li class="knowledge_li">
+                Sampling rate/sampling frequency/recording frequency - This is simply the inverse of the sampling
+                interval,
+                which for the above example would mean that the sampling rate is 1 per second. Note that instead of "per
+                second" you might see the sampling rate given in units of Hertz (Hz). Hertz is a measure of cycles per
+                second, such that 10Hz is 10 cycles per second.
+            </li>
+            <li class="knowledge_li">
+                Total signal length - Usually this can be calculated from knowing the number of samples and the sampling
+                interval but in the uncommon situation when the only the length of signal and number of samples is known
+                then the sampling interval can be calculated from this number.
+            </li>
+        </ul>
+
+        <p class="knowledge_p">
+            Other meta-data which can be vitally important but depends on your particular use case and can include the
+            time and/or location that the data was recorded, how it was recorded, what instruments were used, or the
+            distance
+            to any source of energy used in active recording, this is a non-exhaustive list but shows how much
+            information
+            can be incorporated beyond just the signal itself. External data that is not directly associated with the
+            recorded digital series can also be incorporated if it provides insight into the data at hand. For instance;
+            looking
+            at the historic trend of a stock market in the image below it would be important to note that there were
+            financial crises in the late 1990's and late 2000's brought about by different factors. Without this
+            context, and
+            looking at the series from 1990 to 2012, one could draw the conclusion that a stock market crash would be
+            expected
+            once every decade as a natural cycle, when we know this isn't the case.
+        </p>
+
+        <img src="resources/myImgs/Chart_FTSE 100.jpeg" alt="chart of the FTSE 100 stock index" class="knowledge_img">
+
+        <h2 class="knowledge_h2">The importance of the basic characteristics of digital series</h2>
+
+        <p class="knowledge_p">
+            The two main pieces of meta-data we have considered thus far are the number of samples and the sampling
+            interval (or inversely the sampling rate) or the the total length of the series in measurement units (as we
+            can freely convert between the two). Now let's look at why they are so important.<br><br>
+            As we have previously seen in the case of the stock market example, we might want to understand common
+            cycles within our series of data. These cycles will have a particular frequency such as once every 10 years,
+            or 5 times per second. Hertz (Hz) is commonly used to denote frequency as is the number of cycles per second (1/s). 
+            Frequencies can be extremely low or extremely high; for instance winter comes once per
+            year (a frequency of 3.17x10<sup>-8</sup>Hz!) where as the middle C sound in music is approximately 262Hz
+            and the radio that we listen to is carried on waves between 87Mhz and 108Mhz (8.7x10 <sup>7</sup>Hz to
+            1.08x10 <sup>8</sup>Hz) in the UK. That's a big range, and by no means the limits! <br><br>
+            Given this huge range of frequencies, how should we set up our recording equipment to be able to record
+            these signals? It seems intuitive that if we want to measure something that varies on the scale of a year
+            that we should record for longer than a second and if we want to record something that is changing rapidly
+            then we need to take measurements very quickly too. <br><br>
+            We will formalise this mathematically but first let's look at a quick example. Below is a series of code
+            cells to run that will show you how altering the recording interval for a simple sine wave alters the measured
+            signal appearance, sometimes to dramatic affect.
+        </p>
+
+        <pre><code class="language-python"># let's import some useful libraries
+import numpy as np
+import plotly.offline as pyo
+import plotly.graph_objs as go
+import matplotlib.pyplot as plt
+pyo.init_notebook_mode()
+plt.rcParams['figure.figsize'] = [12, 8]
+# %matplotlib inline</code></pre>
+
+        <pre><code class="language-python">def Plotting(ys, xs, labels, slider_labels, title=None,slider_prefix=None, slider_suffix=None, first_visible=True, mode='lines+markers', dash=None):
+    '''
+    Helper function for producing plots given a signal and some sampling intervals
+    '''
+    data = [dict(
+            mode = mode,
+            visible = False,
+            line = dict(color='#00CED1', width=4, dash=dash),
+            marker = dict(symbol='star', size=12),
+            name = labels[step],
+            x = xs[step],
+            y = ys[step]) for step in range(len(xs))]
+    data[1]['visible'] = True
+    if first_visible:
+        data[0]['visible'] = True
+        data[0]['mode'] = 'lines'
+        data[0]['line'] = dict(color='#000000', width=6)
+
+    steps = []
+    for i in range(1,len(data)):
+        step = dict(
+            method = 'restyle',
+            args = ['visible', [False] * len(data)],
+            label = slider_labels[i]
+        )
+        step['args'][1][i] = True # Toggle i'th trace to "visible"
+        if first_visible:
+            step['args'][1][0] = True
+        steps.append(step)
+
+    sliders = [dict(
+        active = 0,
+        currentvalue = {"prefix": slider_prefix, "suffix":slider_suffix},
+        pad = {"t": 50},
+        steps = steps
+    )]
+
+    layout = dict(sliders=sliders)
+    fig = dict(data=data, layout=layout)
+
+    print(fig)
+    
+    pyo.iplot(fig, filename=title)</code></pre>
+
+        <div id="plot1" , class="knowledge_plot"></div>
+
+        <p class="knowledge_p">
+            Note that when the samping interval is an integer multiple of the inverse of the frequency we are trying to
+            observe (the sine wave in this case) then the same point is measured on each cycle and a flat signal is
+            measured, showing no variation at all. Although in the above example a flat response was also given for a
+            sampling interval equal to half the inverse of the frequency of the sine wave this is a peculiarity of the
+            data
+            and as can be seen from the below example, which is just phase shifted slightly. We can see that there is
+            identifible information at a sampling interval of half the inverse of the frequency we are trying to
+            observe.
+        </p>
+
+        <div id="plot2" , class="knowledge_plot"></div>
+
+        <pre><code class="language-python"># create a sine wave with a phase shift
+sig = np.sin(2 * np.pi * f * t + 0.5) 
+        
+sigs = [sig[::step] for step in sampling_intervals]
+        
+Plotting(sigs, ts, labels, slider_labels=(sampling_intervals*dt).astype(str), title='Sine Wave Slider', slider_prefix="Sampling interval: ", slider_suffix="ms")</code></pre>
+
+        <p class="knowledge_p">
+            If you look at the sampling intervals between half the inverse of the sine frequency and the inverse of the sine frequency then you'll notice that the measured signal looks to be progressively lower frequency until we hit the constant (essentially "zero-frequency") signal. This is because we are taking less than 2 measurements per cycle of the wave which results in successive measurements being further along the next cycle than the previous measurement, essentially stretching the appearance of the measured signal, making it appear to be of a lower frequency. This becomes more pronounced the further apart the samples become (the higher the sampling interval, or conversely the lower the sampling rate) until we only record 1 sample per cycle, which for a sine wave becomes the same value and thus a flat signal.<br><br>
+            This is a fundamental and important aspect of digital series; the Nyquist frequency.
+        </p>
+
+        <h2 class="knowledge_h2">The Nyquist frequency</h2>
+
+        <p class="knowledge_p">The Nyquist frequency is the maxmimum frequency which can be seen within a signal for a
+            given
+            sampling interval and is defined by:<br><br>
+            $inF_{n} = F_{s}/2$in<br><br>
+            Where $inF_{n}$in is the Nyquist frequency and $inF_{s}$in is the sampling frequency.<br><br>
+            Sometimes the data/meta-data that is missing from the set we have can be more important than the data that
+            is
+            there, especially if there is an important underlying reason why that data is missing. A classic example is
+            given in the book "How Not To Be Wrong" by Jordan Ellenberg which I highly recommend reading (the relevant
+            excerpt can be seen here:
+            <a
+                href="https://medium.com/@penguinpress/an-excerpt-from-how-not-to-be-wrong-by-jordan-ellenberg-664e708cfc3d">link</a>,
+            as well
+            as on many people's LinkedIn posts!) as it highlights an important lesson; that the absence of data can be
+            as
+            informative as the data at hand. Much like understanding the space between objects in art is important, so
+            is
+            the space between data points in science.
+        </p>
+
+        <h2 class="knowledge_h2">Fourier Transforms - looking at the frequencies</h2>
+
+        <p>
+            We have introduced frequencies and even tried to assess qualitatively the appearance of a signal in terms of
+            "higher" and "lower" frequencies. But how can we quantitatively assess the frequencies of a signal? If we
+            could fit an analytic signal, or series of them, to a form a spike then we could fit any digital signal as a
+            digital signal is, in essence, a series of spikes of varying amplitude at distinct measurement points. It
+            turns out that a series of sine (or cosine) waves with various amplitude, frequency, and phase can be fit
+            together to from a spike. Specifically, one could sum cosine waves of zero phase, constant amplitude, and
+            varying frequencies to generate a spike at t=0. Then all that is required to phase shift the component
+            cosines to move the spike in time.
+        </p>
+
+        <pre><code class="language-python">short_time = np.linspace(-1.5,1.5,101) # generate symmetric time axis around 0
+FNyq = 1/(2*(short_time[1] - short_time[0])) # get the Nyquist frequency
+freq_interval = 0.01 # define frequency interval to use
+freqs = np.arange(freq_interval, FNyq+freq_interval, freq_interval) # generate a list of frequencies to make sine waves for, up to Nyquist
+evr = 50
+
+# set up array of signals and legends
+combined_signal = np.cos(2 * np.pi * freqs[0] * short_time)
+ys_cos=[combined_signal.copy()]
+leg_cos = ['Frequency: '+str(freqs[0])]
+
+# loop over frequencies
+for i in range(1,len(freqs)):
+    combined_signal += np.cos(2 * np.pi * freqs[i] * short_time)
+    if i%evr==0: # only take a set number of intervals for plotting
+        ys_cos.append(combined_signal/i)
+        leg_cos.append(str(freqs[i]))
+
+if i%evr!=0:
+    ys_cos.append(combined_signal/i)
+    leg_cos.append(str(freqs[i]))
+        
+# produce interactive plot
+ts_cos = [short_time]*len(ys_cos)       
+Plotting(ys_cos, ts_cos, leg_cos, slider_labels=leg_cos, title='Building a spike', slider_prefix="Sum of frequencies to: ", slider_suffix="Hz", first_visible=False, mode='lines')</code></pre>
+
+        <div id="plot3" , class="knowledge_plot"></div>
+
+        <pre><code class="language-python">inds = range(1,len(ys_cos),4)
+for i in inds:
+    plt.plot(ts_cos[i], ys_cos[i])
+plt.legend(['Frequency: '+leg_cos[i] for i in inds])</code></pre>
+
+        <img src="resources/myImgs/Chart_FTSE 100.png" alt="chart of the FTSE 100 stock index" class="knowledge_img">
+
+        <p class="knowledge_p">
+            This means that any digital signal can be approximated by a series of cosines of varying amplitudes,
+            frequencies, and phases. This is known as a Fourier series. The fitted amplitudes, frequencies, and phases
+            can now be assessed to determine how strong each frequency is represented in the signal. For instance, one
+            would expect a good fit for a sine wave with a period of a year to data relating to average temperatures
+            over time for the UK.<br><br>
+            We can do this because, assuming there are no infinity data points in our series, we only have finite
+            discountinuities. This is one of the Dirichlet conditions that must be met to eb able to represent a signal
+            as a Fourier series. What would this look like mathematically?<br><br>
+            $$
+            s(t) = \frac{a_{0}}{2} + \sum^{\infty}_{n=1}a_{n}\cos(2\pi n t/T+\theta_{n})
+            $$
+            <br>
+            Note that we have a coefficient out front of $\frac{a_{0}}{2}$ which accounts for the average of the signal.
+            For instance if we wanted to fit a flat, non-zero response then $a_{0}$ would correspond to twice the
+            average of the signal and all other coefficients would be zero. We can also write this equation in terms of
+            sines and cosines without any phase term as sine and cosine form an orthogonal set:<br><br>
+            $$
+            s(t) = \frac{a_{0}}{2} + \sum^{\infty}_{n=1}b_{n}\cos(2\pi n t/T) + c_{n}\sin(2\pi n t/T)
+            $$
+            <br>
+            Where $ina_{n} = \sqrt{b_{n}^{2} + c_{n}^{2}}$in and $in\theta_{n} =
+            \tan^{-1}\left(-\frac{c_{n}}{b_{n}}\right)$in.<br><br>
+            This is a representation of a real valued series as a Fourier Series, however we can also extend this to
+            complex valued signals as well by exchanging sines and cosines for a complex exponential:<br><br>
+            $$
+            s(t) = \sum^{\infty}_{n=-\infty}a_{n}e^{2i\pi n t/T}
+            $$
+            <br>
+            However, if we have infintesimally small separations between the discrete frequencies then we can think of
+            this series in terms of an integral:<br><br>
+            In practice it turns out that it is rather difficult to accurately assess frequencies close to the Nyquist
+            frequency so a "rule of thumb" is applied by many practioners as to what frequencies can be recorded
+            accurately. Although these rules of thumb vary, many would assume that frequencies measured between 90% and
+            100% of the Nyquist frequency too inaccurate for further analysis. This is compounded by the fact that many
+            signals are typically bounded by windowing functions that impose their own spectrum on the recorded signal
+            (this will be covered in the section on convolution).
+        </p>
+    </div>
+
+    <div class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+            style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This work is
+        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+          Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+      </div>
+    
+
+</body>
+
+<script src="scripts/plotly_test.js"></script>
+
+<!-- use this to run the code syntax highlighting in highlight.js -->
+<!-- <script>hljs.highlightAll();</script> -->
+<!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+<script src="scripts/prism.js"></script>
+</html>

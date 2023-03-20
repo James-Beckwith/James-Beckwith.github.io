@@ -1,0 +1,360 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    background-color: #fff;
+    color: rgb(185,185,185);
+    font-family: 'Lato', 'Arial', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    text-rendering: optimizeLegibility;
+}
+
+.clearfix {zoom: 1}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+/* -------------------- */
+/* RE-USABLE COMPONENTS */
+/* -------------------- */
+
+.license {
+    background-color: black;
+}
+
+.row {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+section {
+    padding: 80px 0;
+}
+
+.box {
+    padding: 1%;
+}
+
+h1, h2, h3 {
+    margin: 0;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 240%;
+    word-spacing: 4px;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-size: 180%;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+h3 {
+    font-size: 110%;
+    word-spacing: 2px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Stuff that will appear after the h2 class */
+h2:after {
+    display: block;
+    height: 2px;
+    background-color: RGBA(90,166,225,1);
+    /* content must be specified when using after !!! This is just putting a 2px high orange block after a h2 entry with an empty string as content */
+    content: " "; 
+    width: 100px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+
+.btn-app img {
+    height: 50px;
+    width: auto;
+    margin-left: 10px;
+}
+
+.btn-app:link,
+.btn-app:visited {
+    border: 0;
+}
+
+
+/* ---------- */
+/* PARAGRAPHS */
+/* ---------- */
+
+.long-copy {
+    line-height: 145%;
+    width: 70%;
+    margin-left: 15%;
+}
+
+.box p {
+    font-size: 90%;
+    line-height: 145%;
+}
+
+/* ----- */
+/* ICONS */
+/* ----- */
+
+.icon-big {
+    font-size: 350%;
+    display: block;
+    color: orange;
+    margin-bottom: 10px;
+}
+
+/* LINKS */
+
+a:link,
+a:visited {
+    /* color: orange; */
+    text-decoration: none;
+    color: white
+    /* border-bottom: 1px solid orange;
+    padding-bottom: 1px;
+    transition: border-bottom 0.2s, color 0.2s; */
+}
+
+a:hover,
+a:active {
+    color:  rgb(185,185,185);
+    border-bottom: 1px solid transparent;
+}
+
+/* ----------------------- */
+/* START OF BUTTON STYLE */
+/* ----------------------- */
+.btn:link,
+.btn:visited {
+    display: inline-block;
+    padding: 10px 30px;
+    font-weight: 400;
+    font-size: larger;
+    text-decoration: none;
+    border-radius: 200px;
+    color: white;
+    transition: background-color 0.2s, border 0.2s, color 0.2s;
+}
+
+.btn:hover,
+.btn:active {
+    background-color: rgb(54,183,250);
+}
+
+.btn-full:link,
+.btn-full:visited {
+    background-color:rgb(54,183,250);
+    border: 1px solid rgb(54,183,250);
+    color: white;
+}
+
+.btn-ghost:link,
+.btn-ghost:visited {
+    border: 1px solid rgb(54,183,250);
+    color: white;
+}
+
+/* ------------- */
+/* HEADER */
+/* ------------- */
+header {
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../myImgs/thought_bulb.jpg);
+    background-size: cover;
+    background-position: center; 
+    height: 100vh;
+    background-color: black;
+    background-attachment: fixed;
+}
+
+
+/* ------------- */
+/* MAIN-BOX */
+/* ------------- */
+
+.main-box-background {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(../myImgs/thought_bulb.jpg);
+    background-size: cover;
+    background-position: center;
+    /* cool effect that makes image stay in place when scrolling */
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100%;
+}
+
+.main-box {
+    display: grid;
+    /* grid-template-columns: 1fr 2fr; */
+    grid-template-columns: fit-content(33%) fit-content(66%);
+    grid-template-rows: max-content;
+    width: 100%;
+    /* gap: 30px; */
+    column-gap: 20px;
+    row-gap: 20px;
+    padding: 10px 35px;
+    justify-items: baseline;
+    align-items:flex-start;
+    min-width: 0;
+}
+
+.main-box h1 {justify-self: center; align-self: center;}
+
+.selection-box {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    justify-self: center;
+    align-self: center;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+    justify-items: center;
+    align-items: center;
+    min-width: 0;
+    width: 90%;
+}
+
+.hero-text-box h1 {
+    /* position: absolute; */
+    /* width: 1140px; */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    grid-column: 1/2;
+    grid-row: 2/3;
+    min-width: 0;
+    justify-self: center;
+}
+
+.logo {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    height: auto;
+    width: 100%;
+    align-self:left;
+    justify-self: center;
+    max-width: 300px;
+}
+
+.main-nav {
+    float: right;
+    list-style: none;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.main-nav li {
+    display: inline-block;
+    margin-left: 40px;
+    font-weight: 400;
+    color: white;
+}
+
+.displayNone {
+    display:none;
+}
+
+.displayInlineBlock {
+    display:inline-block;
+}
+
+.main-nav li a:link,
+.main-nav li a:visited {
+    /* padding: 8px 0; */
+    font-size: 100%;
+    border-bottom: 2px solid transparent;
+}
+
+.main-nav li a:hover,
+.main-nav li a:active {
+    /* padding: 8px 0; */
+    border-bottom: 2px solid rgb(54,183,250);
+}
+
+.mobile-nav-icon {
+    float: right;
+    margin-top: 30px;
+    /* This needs to be specified if you want a pointer on an a tag element that doesn't have a href */
+    cursor: pointer;
+    display: none;
+}
+
+.mobile-nav-icon i {
+    font-size: 200%;
+    color: #fff;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 2px #efefef;
+    /* z-index defines the stack order of elements and 9999 is the largest allowed value so it will always be on top */
+    z-index: 9999;
+}
+
+.sticky .main-nav { margin-top: 18px; }
+
+.sticky .main-nav li a:link,
+.sticky .main-nav li a:visited {
+    padding: 15px 0;
+    color: #555;
+}
+
+.sticky .logo-black {display: block;}
+.sticky .logo {display: none;}
+
+
+/* ------------ */
+/* youtube-vids */
+/* ------------ */
+
+.youtube-vids {
+    background-color: lightgray;
+}
+
+.youtube-vids iframe {
+    border-left: none;
+    width: 30%;
+    height: auto;
+}
+
+.youtube-vids span {
+    position: absolute;
+    /* display: table-cell;
+    vertical-align: middle; */
+    height: 315px;
+}
+
+.youtube-vids span p {
+    /* width: 560px;
+    height: 315px; */
+    color: black;
+    text-align: center;
+    /* vertical-align: middle; */
+    position: relative; 
+    top: 50%;
+    transform: translate(0, -50%) 
+}

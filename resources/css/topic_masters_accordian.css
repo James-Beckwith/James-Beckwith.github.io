@@ -1,0 +1,110 @@
+html {
+  background-color: #595554;
+}
+
+body {
+  /* line-height: 1.5;
+    font-family: 'Inter', sans-serif; */
+  background-color: #595554;
+}
+
+/* RGBA(90,166,225,1)	  datajab blue light */
+/* RGBA(35,76,133,1)  datajab blue dark */
+/* RGBA(62,62,64,1) chalky gray */
+h1 {
+  font-size: 32px;
+  /*   font-weight: 700; It will not make much difference from default style Bold is 700 only*/
+  color: black;
+  margin-bottom: 32px;
+  letter-spacing: -.5px;
+}
+
+
+.accordion {
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+  /* TODO change this to be reactive to the screen width */
+  width: 90%;
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* flex: 50%; */
+  gap: 24px;
+}
+
+.item {
+  padding: 24px;
+  background-color: #fff;
+  color: #cfbba5;
+  border-radius: 5px;
+  box-shadow: 0 0px 12px #cfbba5;
+}
+
+.item[open] {
+  border-radius: 5px;
+  box-shadow: 0 0px 24px #cfbba5;
+  /* border-top: 4px solid #bdaea2; */
+  color: #5c433b;
+}
+
+.item[open] .title {
+  font-weight: 500;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 400;
+  cursor: pointer;
+  /*   list-style: none; when you are using display is flex then no longer list style is required for any list styles like ol or ul summary etc. it will not a list item any more.*/
+  position: relative;
+
+  display: flex;
+  align-content: center;
+  gap: 24px;
+}
+
+.number {
+  /*   font-size: 24px; it will inherit from parent */
+  /*   font-weight: 500; it will inherit from parent */
+  color: #B2B1B1;
+}
+
+.item[open] .number {
+  color: #5c433b;
+}
+
+/* The "::after" selector adds a new element after the last element of the selected item. For instance this will add an element with the content
+  "+" after the last item in the "title" element. */
+.title::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+}
+
+.item[open] .title::after {
+  content: '-';
+}
+
+.text {
+  /*   line-height: 1.6; changed from body line height 1.5. i hope you would agree with me */
+  width: 85%;
+  margin-top: 24px;
+  color: RGBA(35, 76, 133, 1);
+  margin-left: 56px;
+}
+
+.accordion a {
+  color: black;
+}
+
+.accordion a:hover,
+a:active {
+  /* color:  RGBA(35,76,133,1); */
+  color: RGBA(90, 166, 225, 1);
+  border-bottom: 1px solid transparent;
+}
+
+ol {
+  list-style-position: inside;
+}
