@@ -12,7 +12,7 @@ body {
 /* RGBA(35,76,133,1)  datajab blue dark */
 /* RGBA(62,62,64,1) chalky gray */
 h1 {
-  font-size: 32px;
+  font-size: 180%;
   /*   font-weight: 700; It will not make much difference from default style Bold is 700 only*/
   color: black;
   margin-bottom: 32px;
@@ -30,4 +30,8 @@ h1 {
   flex-direction: column;
   flex: 0 1 auto;
   gap: 24px;
+}
+
+.next-page {
+  font-size: 160%
 }

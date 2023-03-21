@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
-    <meta charset="utf-8"> 
+    <meta charset="utf-8">
     <!-- Plotly.js -->
     <!-- the local version requires the use of Plotly.newPlot -->
     <script src="scripts/plotly-2.18.2.min.js"></script>
@@ -29,7 +30,8 @@
         <div class="row">
             <!-- ul is an unordered list which should contain li list elements -->
             <ul class="main-nav js--main-nav">
-                <li><a href="index.html">Home</a></li> <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a href="index.html">Home</a></li>
+                <!-- TODO maybe thinking about changing Home to a home icon instead?-->
                 <li><a herf="#">About us</a></li>
                 <li><a herf="#">Education</a></li>
                 <li><a herf="#">Consultancy</a></li>
@@ -42,6 +44,8 @@
     <div class="main-container">
 
         <h1 class="knowledge_h1">Fourier Transforms - looking at the frequencies</h1>
+
+        <h2 class="knowledge_h2">All you need is sines</h2>
 
         <p>
             We have introduced frequencies and even tried to assess qualitatively the appearance of a signal in terms of
@@ -70,11 +74,11 @@ for i in range(1,len(freqs)):
     combined_signal += np.cos(2 * np.pi * freqs[i] * short_time)
     if i%evr==0: # only take a set number of intervals for plotting
         ys_cos.append(combined_signal/i)
-        leg_cos.append(str(freqs[i]))
+        leg_cos.append(str(round(freqs[i],2)))
 
 if i%evr!=0:
     ys_cos.append(combined_signal/i)
-    leg_cos.append(str(freqs[i]))
+    leg_cos.append(str(round(freqs[i],2)))
         
 # produce interactive plot
 ts_cos = [short_time]*len(ys_cos)       
@@ -87,16 +91,22 @@ for i in inds:
     plt.plot(ts_cos[i], ys_cos[i])
 plt.legend(['Frequency: '+leg_cos[i] for i in inds])</code></pre>
 
-        <img src="resources/myImgs/Chart_FTSE 100.png" alt="chart of the FTSE 100 stock index" class="knowledge_img">
+        <img src="resources/myImgs/sum_cosines.png" alt="A plot of the sum of cosines waves of various frequencies"
+            class="knowledge_img">
 
         <p class="knowledge_p">
+            The above plot shows the sum of cosine waves of up to various frequencies. It turns out that a series of
+            sine (or cosine) waves with various amplitude, frequency, and phase can be fit together to from a spike.
+            Specifically, one could sum cosine waves of zero phase, constant amplitude, and varying frequencies to
+            generate a spike at t=0. Then all that is required to phase shift the component cosines to move the spike in
+            time. <br><br>
             This means that any digital signal can be approximated by a series of cosines of varying amplitudes,
             frequencies, and phases. This is known as a Fourier series. The fitted amplitudes, frequencies, and phases
             can now be assessed to determine how strong each frequency is represented in the signal. For instance, one
-            would expect a good fit for a sine wave with a period of a year to data relating to average temperatures
+            would expect a good fit for a cosine wave with a period of a year to data relating to average temperatures
             over time for the UK.<br><br>
-            We can do this because, assuming there are no infinity data points in our series, we only have finite
-            discountinuities. This is one of the Dirichlet conditions that must be met to eb able to represent a signal
+            We can do this because, assuming there are no data points of infinite amplitude in our series, we only have finite
+            discountinuities. This is one of the Dirichlet conditions that must be met to be able to represent a signal
             as a Fourier series. What would this look like mathematically?<br><br>
             $$
             s(t) = \frac{a_{0}}{2} + \sum^{\infty}_{n=1}a_{n}\cos(2\pi n t/T+\theta_{n})
@@ -131,12 +141,13 @@ plt.legend(['Frequency: '+leg_cos[i] for i in inds])</code></pre>
 
     <div class="license">
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
-            style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This work is
+                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+        work is
         licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
-          Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-      </div>
-    
-      
+            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    </div>
+
+
 </body>
 
 <script src="scripts/plotly_test.js"></script>
@@ -145,4 +156,5 @@ plt.legend(['Frequency: '+leg_cos[i] for i in inds])</code></pre>
 <!-- <script>hljs.highlightAll();</script> -->
 <!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
 <script src="scripts/prism.js"></script>
+
 </html>
