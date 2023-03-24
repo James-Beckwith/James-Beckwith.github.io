@@ -209,14 +209,14 @@ plt.rcParams['figure.figsize'] = [12, 8]
             observe.
         </p>
 
-        <div id="plot2" , class="knowledge_plot"></div>
-
         <pre><code class="language-python"># create a sine wave with a phase shift
 sig = np.sin(2 * np.pi * f * t + 0.5) 
         
 sigs = [sig[::step] for step in sampling_intervals]
         
 Plotting(sigs, ts, labels, slider_labels=(sampling_intervals*dt).astype(str), title='Sine Wave Slider', slider_prefix="Sampling interval: ", slider_suffix="ms")</code></pre>
+
+<div id="plot2" , class="knowledge_plot"></div>
 
         <p class="knowledge_p">
             If you look at the sampling intervals between half the inverse of the sine frequency and the inverse of the sine frequency then you'll notice that the measured signal looks to be progressively lower frequency until we hit the constant (essentially "zero-frequency") signal. This is because we are taking less than 2 measurements per cycle of the wave which results in successive measurements being further along the next cycle than the previous measurement, essentially stretching the appearance of the measured signal, making it appear to be of a lower frequency. This becomes more pronounced the further apart the samples become (the higher the sampling interval, or conversely the lower the sampling rate) until we only record 1 sample per cycle, which for a sine wave becomes the same value and thus a flat signal.<br><br>

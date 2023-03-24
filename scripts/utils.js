@@ -7,9 +7,8 @@ export function makeArr(startValue, stopValue, cardinality) {
   return arr;
 }
 
-export function plotting(ys, xs, labels, slider_labels, title=null, slider_prefix=null, slider_suffix=null, first_visible=True, mode='lines+markers', dash=null){
+export function plotting(ys, xs, labels, slider_labels, title=null, slider_prefix=null, slider_suffix=null, first_visible=true, mode='lines+markers', dash=null){
     var data = new Array()
-    var first_visible = true
     for (var i = 0; i < xs.length; i++) {
         data.push({
                 mode : mode,
