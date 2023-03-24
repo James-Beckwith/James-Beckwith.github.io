@@ -7,10 +7,10 @@ export function makeArr(startValue, stopValue, cardinality) {
   return arr;
 }
 
-export function plotting(ys, xs, tagId, labels, slider_labels, title=null, slider_prefix=null, slider_suffix=null, first_visible=True, mode='lines+markers', dash=null){
+export function plotting(ys, xs, labels, slider_labels, title=null, slider_prefix=null, slider_suffix=null, first_visible=True, mode='lines+markers', dash=null){
     var data = new Array()
     var first_visible = true
-    for (var i = 0; i < ts.length; i++) {
+    for (var i = 0; i < xs.length; i++) {
         data.push({
                 mode : mode,
                 visible : false,
@@ -28,10 +28,6 @@ export function plotting(ys, xs, tagId, labels, slider_labels, title=null, slide
     }
     
     var steps = new Array()
-    var slider_labels = new Array()
-    for (i = 0; i < sampling_intervals.length; i++) {
-        slider_labels.push((i*dt).toString())
-    }
     for (var i = 1; i < data.length; i++) {
         var falses = new Array(data.length).fill(false)
         var step = {method : 'restyle',
@@ -51,9 +47,8 @@ export function plotting(ys, xs, tagId, labels, slider_labels, title=null, slide
         steps : steps
     }]
     
-    var layout = {sliders:sliders}
+    var layout = {sliders:sliders, title:{text:title}}
     var fig = {data:data, layout:layout}
     
-    TEST2 = document.getElementById(tagId);
-    Plotly.newPlot(TEST2, fig, {showSendToCloud: true});
+    return fig
 }

@@ -10,6 +10,7 @@ var sampling_intervals = makeArr(5, 400, 80)
 var ts = []
 var sigs = []
 var labels = []
+var step = 1
 for (var i = 0; i < sampling_intervals.length; i++) {
     ts[i] = new Array()
     sigs[i] = new Array()
@@ -21,6 +22,14 @@ for (var i = 0; i < sampling_intervals.length; i++) {
     }
 }
 
+var slider_labels = new Array()
+for (i = 0; i < sampling_intervals.length; i++) {
+    slider_labels.push((i*dt).toString())
+}
+
 labels[0] = 'Sine wave'
 
-plotting(sigs, ts, 'plot1',labels, slider_labels=labels, title='Sine Wave Slider', slider_prefix="Sampling interval: ", slider_suffix="ms", dash='longdash')
+var fig = plotting(sigs, ts, labels, slider_labels, 'Sine Wave Slider', "Sampling interval: ", "ms", 'longdash')
+
+var TEST2 = document.getElementById('plot1');
+Plotly.newPlot(TEST2, fig, {showSendToCloud: true});
