@@ -43,7 +43,162 @@
 
     <div class="main-container">
 
-        <h1 class="knowledge_h1">Page under construction</h1>
+        <h1 class="knowledge_h1">Least Squares Inversion</h1>
+
+        <h2 class="knowledge_h2"></h2>
+
+        <p class="knowledge_p">
+            Staring with the general equation form of our problem statement
+        </p>
+        <p class="knowledge_eq">$$d = Gm$$</p>
+        <p class="knowledge_p">
+            we can now start to
+            re-arrange this formula for the model variables, $in m $in, which we are interested in determining. <br><br>
+            The first thing to note is that the data kernel, G, is typically a matrix with a size of $in N_{d} $in x $in
+            N_{m} $in where $in N_{d} $in and $in N_{m} $in are the number of data samples and the number of model
+            variables respectively. Although we will highlight this later, it might be obviosu that this matrix can
+            become very large and difficult to handle if either the number of data points or the dimensionality of the
+            model space is large.<br><br>
+            Given that $in G $in is a matrix then we can't simply divide both sides of the equation by G, unless it is a
+            square matrix with non-zero determinant. Therefore, generally, we must first "make G square". We can do this
+            rather simply by multiplying on the left of this equation by the transpose of the data kernel matrix, $in
+            G^{T} $in.
+        </p>
+        <p class="knowledge_eq">$$G^{T}d = G^{T}Gm$$</p>
+        <p class="knowledge_p">
+            This means that the product $in G^{T}G $in now has dimensions of $in N_{s} $in x $in N_{s} $in, i.e. it is
+            square. Now that we can be sure that this "squared" data kernel is square in dimensionality then we can
+            multiple both sides of the equation by the inverse of this squared data kernel.
+        </p>
+        <p class="knowledge_eq">$$(G^{T}G)^{-1} G^{T}d = (G^{T}G)^{-1} (G^{T}G) m$$</p>
+        <p class="knowledge_p">
+            As you would expect, a value multiplied by it's inverse is equal to one (with obvious exceptions for zero).
+            So the $in (G^{T}G)^{-1}(G^{T}G) $in term on the right side of the equation disappears, leaving us with an
+            equation to determine the model parameters, $in m $in, from the recorded data, $in d $in, and our
+            understanding of the physical system, $in G $in. Putting the model vector on the left hand side of the
+            equation now we have:
+        </p>
+
+        <p class="knowledge_eq">$$m = (G^{T}G)^{-1} G^{T}d$$</p>
+
+        <!-- TODO filler about cautions on inverse of GTG -->
+
+        <h2 class="knowledge_h2">Polynomial curve fitting example</h2>
+        <p class="knowledge_p">
+            Let's look a specific example of using this form of equation to solve a problem. <br><br>
+            We'll try to fit a polynomial curve to a dataset, a typical and standard problem. The form of an
+            n<sup>th</sup> order polynomial is given by:
+        </p>
+        <p class="knowledge_eq">
+            $$y = a_{n}x^{n} + a_{n-1}x^{n-1} + \ldots a_{2}x^{2} +a_{1}x + a_{0} $$
+        </p>
+        <p class="knowledge_p">
+            Here the collection of $in a $in coefficients define the model parameters that we are looking for as they
+            determine the shape of the fitted curve. We also have the choice of what order of polynomial, $in n $in, to
+            use to fit the data, which is denoted by the vector of values $in y $in. <br><br>
+        </p>
+        <p class="knowledge_eq"></p>
+        $$G=
+        \begin{bmatrix}
+        x_{1}^{m} & x_{1}^{m-1} & \ldots & x_{1}^{2} & x_{1} & 1 \\
+        x_{2}^{m} & x_{2}^{m-1} & \ldots & x_{2}^{2} & x_{2} & 1 \\
+        \vdots & \vdots & \ddots & \vdots & \vdots & \vdots\\
+        x_{Nd}^{m} & x_{Nd}^{m-1} & \ldots & x_{Nd}^{2} & x_{Nd} & 1 \\
+        \end{bmatrix}
+        $$
+        </p>
+
+        <!-- TODO Introduce the athletes.csv dataset and say we'll use a 2nd order polynomial without any justification, we'll lead onto this -->
+        <p class="knowledge_p">
+            We are going to use a dataset of various characteristics of Olympic athletes. In this instance we are solely
+            interested in the relationship between the height and weight of the athletes to determine if there is a
+            relationship, what it might be, and to develop a model that can predict, based solely on height, what the
+            weight of the athlete might be. This is just a toy example to showcase how to use the linear least squares
+            framework we have outlined to fit these functions.<br><br>We will be using python to perform this analysis
+            so first we'll import some libraries, read the data, and show the first few lines to see what the data looks
+            like, which is always a good first step in any investigation.
+        </p>
+
+        <pre><code class="language-python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+
+        <pre><code class="language-python">df = pd.read_csv('athletes.csv')
+print(df.head(5))
+df_small = df.loc[:,['weight','height']].dropna()
+height = df_small.height.values.T
+weight = df_small.weight.values.T</code></pre>
+
+        <!-- id            name nationality     sex       dob  height  weight   sport  gold  silver  bronze
+          736041664  A Jesus Garcia         ESP    male  10/17/69    1.72    64.0   athletics     0       0       0  
+          532037425      A Lam Shin         KOR  female   9/23/86    1.68    56.0     fencing     0       0       0  
+          435962603     Aaron Brown         CAN    male   5/27/92    1.98    79.0   athletics     0       0       1  
+          521041435      Aaron Cook         MDA    male    1/2/91    1.83    80.0   taekwondo     0       0       0
+          33922579      Aaron Gate         NZL    male  11/26/90    1.81    71.0    cycling     0       0       0 
+         -->
+
+        <p class="knowledge_p">
+            Since fitting an n<sup>th</sup> order polynomial is a rather generic task it makes sense to generate some
+            functions such that we can re-run this kind of analysis with any other data in the future. Even though we
+            are going to use a 2<sup>nd</sup> order polynomial to fit out data, it is sensible to make a function that
+            can fit any order of polynomial. We'll also write a function to help us plot the results as well.
+        </p>
+
+        <pre><code class="language-python">def plotting(x, y, m, xlabel, ylabel, polynomial_degree):
+    plt.figure()
+    plt.plot(x,y,'x')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(f'{ylabel} Vs {xlabel}')
+    xfine = np.linspace(np.min(x), np.max(x), 10*len(x))
+    G = makeG(xfine, polynomial_degree)
+    yfine = np.dot(G,m)
+    plt.plot(xfine,yfine,'r--')
+
+def makeG(x, polynomial_degree):
+    G = np.zeros((len(x), polynomial_degree + 1))
+    for power in range(polynomial_degree+1):
+        G[:,-1-power] = x**power
+    return G
+
+def linearInversion(x, y, polynomial_degree, lam):
+    G = makeG(x, polynomial_degree)
+    Gt = G.T
+    GtG = np.dot(Gt, G)
+    regularization = lam * np.eye(polynomial_degree + 1)
+    GtGinv = np.linalg.inv(GtG + regularization)
+    m = np.dot(np.dot(GtGinv, Gt), y)
+    return m
+
+def getCost(x, y, m, polynomial_degree):
+    G = makeG(x, polynomial_degree)
+    yhat = np.dot(G,m)
+    cost = np.linalg.norm(y-yhat,2)
+    return cost</code></pre>
+
+        <p class="knowledge_p">
+            Now that we have the data imported and all the functions we require to run our inversion, all that is left is to define the order of polynomial that we are going to use, 2 in this case, run the inversion, and view the results.
+        </p>
+
+<pre><code class="language-python">polynomial_degree = 2
+    model = linearInversion(weight, height, polynomial_degree, 0)
+    print(model)
+    print(getCost(weight, height, model, polynomial_degree))
+    plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pre>
+
+    <!-- This image looks bad, too big and low res, can we do something about that? Maybe limit the vertical/horizontal size of images?-->
+    <img src="resources/myImgs/lls_2poly_0reg.png" alt="A plot of athlete's weight Vs height with a fitted second order polynomial" class="knowledge_img">
+
+        <p class="knowledge_p">
+            We've shown how to perform linear least squares inversion (sometimes calledd Guass-Newton inversion) and
+            have gone through an example of using that framework to fit a polynomial curve to a dataset of Athlete's
+            weigh Vs height. We choose to use a 2<sup>nd</sup> order polynomial in our exmaple but why? We could have
+            used a straight line, or a 5<sub>th</sub> order polynomial, and what would the difference between the two
+            be? That is something we'll discuss in the next section on bias and variance.
+        </p>
+        <a class="next-page" href="bias_and_variance.html">Bias and Variance</a>
+
+    </div>
 
     <div class="license">
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
