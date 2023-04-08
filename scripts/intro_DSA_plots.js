@@ -1,16 +1,17 @@
 import { makeArr,plotting } from "./utils.js"
 
-var Nsamp = 2000.0
+var Nsamp = 1000.0
 var dt = 0.01
 var L = (Nsamp - 1.0) * dt
 var t = makeArr(0,L,Nsamp)
 var f = 1
 var sig = t.map(x => Math.sin(x * 2 * Math.PI * f))
-var sampling_intervals = makeArr(5, 400, 80)
+var sampling_intervals = makeArr(5, 200, 40)
 var ts = []
 var sigs = []
 var labels = []
 var step = 1
+console.log(sampling_intervals)
 for (var i = 0; i < sampling_intervals.length; i++) {
     ts[i] = new Array()
     sigs[i] = new Array()

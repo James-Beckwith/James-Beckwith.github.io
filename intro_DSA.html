@@ -195,6 +195,24 @@ plt.rcParams['figure.figsize'] = [12, 8]
     
     pyo.iplot(fig, filename=title)</code></pre>
 
+    <pre><code class="language-python"># set up time axis
+Nsamp = 2000 # number of samples
+dt = 0.01 # sample interval
+L = (Nsamp - 1)*dt # Time length of signal
+t = np.linspace(0,L,Nsamp) # vector of time instants
+
+# create a sine wave
+f = 1 # best to keep this the same for the comparisons
+sig = np.sin(2 * np.pi * f * t) 
+sampling_intervals = np.arange(5,400,80) # these are the sampling intervals we will use measured in samples, not time!
+ts, sigs, labels= ([],[],[])
+for step in sampling_intervals:
+    ts.append(t[::step])
+    sigs.append(sig[::step])
+    labels.append('Measured Signal')
+labels[0] = 'Sine wave'
+
+Plotting(sigs, ts, labels, slider_labels=(sampling_intervals*dt).astype(str), title='Sine Wave Slider', slider_prefix="Sampling interval: ", slider_suffix="ms", dash='longdash')</code></pre>
         <div id="plot1" , class="knowledge_plot"></div>
 
         <p class="knowledge_p">
