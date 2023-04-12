@@ -38,4 +38,15 @@ h1 {
 
 .knowledge_video {
   align-self: center;
+  width: 50%
+}
+
+.knowledge_img {
+  width: 80%;
+  align-self: center;
+}
+
+.knowledge_eq {
+  align-self: center;
+  color: white
 }
