@@ -102,7 +102,7 @@
         </p>
 
         <p class="knowledge_eq">
-            $d=G(m)$$
+            $$d=G(m)$$
         </p>
 
         <p class="knowledge_p">
@@ -141,13 +141,14 @@
         <p class="knowledge_p">
             And we are trying to optimize for the model update, $in \delta m$in. To do this though we will need to
             expand the data kernal, $in G$in, such that we have a function that is solely dependent upon the model
-            update, $in \delta m$in. We can do this by performing a Taylor series expansion on the cost function.
+            update, $in \delta m$in. We can do this by performing a Taylor series expansion on the cost function around
+            the current model estimate, $in m_{k}$in.
         </p>
 
 
         <p class="knowledge_eq">
-            $$ g(m_{0} + \Delta m) = g(m_{0}) + \frac{\partial g}{\partial m}\big\rvert_{m_{0}} \Delta m +
-            \frac{1}{2}\Delta m^{T} \frac{\partial^{2} g}{\partial m^{2}}\big\rvert_{m_{0}} \Delta m $$
+            $$ g(m_{k} + \Delta m) = g(m_{k}) + \frac{\partial g}{\partial m}\big\rvert_{m_{k}} \Delta m +
+            \frac{1}{2}\Delta m^{T} \frac{\partial^{2} g}{\partial m^{2}}\big\rvert_{m_{k}} \Delta m $$
         </p>
 
         <p class="knowledge_p">
@@ -159,8 +160,8 @@
         </p>
 
         <p class="knowledge_eq">
-            $$ J = \frac{\partial g}{\partial m}\big\rvert_{m_{0}} $$
-            $$d = g(m_{0}) +J\Delta m $$
+            $$ J = \frac{\partial g}{\partial m}\big\rvert_{m_{k}} $$
+            $$d = g(m_{k}) +J\Delta m $$
         </p>
 
         <p class="knowledge_p">
@@ -170,7 +171,7 @@
         <p class="knowledge_eq">
             $$c =
             \begin{Vmatrix}
-            g(m_{0}) - Y + J\Delta m
+            g(m_{k}) - Y + J\Delta m
             \end{Vmatrix}^{2}
             $$
         </p>
@@ -182,13 +183,13 @@
         </p>
 
         <p class="knowledge_eq">
-            $\frac{\partial C}{\partial m} = 2J^{T}( g(m_{0}) - Y + J\Delta m) = 0$
-            $J^{T} (g(m_{0}) - Y) + J^{T} J\Delta m = 0$
-            $J^{T} J\Delta m = -J^{T} (g(m_{0}) - Y) $
+            $$\frac{\partial C}{\partial m} = 2J^{T}( g(m_{k}) - Y + J\Delta m) = 0$$
+            $$J^{T} (g(m_{k}) - Y) + J^{T} J\Delta m = 0$$
+            $$J^{T} J\Delta m = -J^{T} (g(m_{k}) - Y) $$
 
-            $\Delta m = -(J^{T} J)^{-1} J^{T} (g(m_{0}) - Y) $
+            $$\Delta m_{k} = -(J^{T} J)^{-1} J^{T} (g(m_{k}) - Y) $$
 
-            $m = m_{0} - (J^{T} J)^{-1} J^{T} r $
+            $$m_{k+1} = m_{k} - (J^{T} J)^{-1} J^{T} r $$
         </p>
 
         <p class="knowledge_p">
@@ -197,7 +198,7 @@
         </p>
 
         <p class="knowledge_eq">
-            $m_{k+1} = m_{k} - (J_{k}^{T} J_{k})^{-1} J_{k}^{T} r_{k} $
+            $$m_{k+1} = m_{k} - (J_{k}^{T} J_{k})^{-1} J_{k}^{T} r_{k} $$
         </p>
 
         <h2 class="knowledge_h2">Solving our Gaussian fitting problem with non-linear least squares inversion</h2>
@@ -217,17 +218,17 @@
         </p>
 
         <p class="knowledge_eq">
-            $\LARGE{\frac{\partial y}{\partial A} = -e^{\frac{-(x-\bar{x})^{2}}{2\sigma^{2}}}} $
+            $$\LARGE{\frac{\partial y}{\partial A} = -e^{\frac{-(x-\bar{x})^{2}}{2\sigma^{2}}}} $$
         </p>
 
         <p class="knowledge_eq">
-            $\LARGE{\frac{\partial y}{\partial \bar{x}} =
-            -A\frac{(x-\bar{x})}{\sigma^{2}}e^{\frac{-(x-\bar{x})^{2}}{2\sigma^{2}}}} $
+            $$\LARGE{\frac{\partial y}{\partial \bar{x}} =
+            -A\frac{(x-\bar{x})}{\sigma^{2}}e^{\frac{-(x-\bar{x})^{2}}{2\sigma^{2}}}} $$
         </p>
 
         <p class="knowledge_eq">
-            $\LARGE{\frac{\partial y}{\partial \sigma} =
-            -A\frac{(x-\bar{x})^{2}}{\sigma^{3}}e^{\frac{-(x-\bar{x})^{2}}{2\sigma^{2}}}} $
+            $$\LARGE{\frac{\partial y}{\partial \sigma} =
+            -A\frac{(x-\bar{x})^{2}}{\sigma^{3}}e^{\frac{-(x-\bar{x})^{2}}{2\sigma^{2}}}} $$
         </p>
 
         <p class="knowledge_p">

@@ -194,12 +194,14 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         <img src="resources/myImgs/lls_2poly_0reg.png"
             alt="A plot of athlete's weight Vs height with a fitted second order polynomial" class="knowledge_img">
 
-        <h2 class="knowledge_h2">An alternative and potentially more useful derivation of the linear least squares equation</h2>
+        <h2 class="knowledge_h2">An alternative and potentially more useful derivation of the linear least squares
+            equation</h2>
 
         <p class="knowledge_p">
             An alternative derivation of the Gauss-Newton method is formulate the problem as a cost function, which we
             have already done in the python python function "getCost", which defines the cost function as an L2-norm of
-            the recorded data, $in d$in, and the estimated data based on the model parameters, $in \hat{d}$in.
+            the recorded data, $in d$in, and the estimated data based on the model parameters, $in \hat{d}$in. Where $in
+            \hat{d} = G\hat{m} $in and $in \hat{m} $in is the current estimate of the model parameters.
         </p>
 
         <p class="knowledge_eq">
@@ -218,16 +220,21 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         </p>
 
         <p class="knowledge_p">
-            Evn though this partial derivative involves martices, the partial derivative is calculated in almost the same
-            way as we would expected of single valued variables with one small exception. <br><br>Firstly, we can mutliply out the brackets to remove the norm nomeclacture from the equation
+            Evn though this partial derivative involves martices, the partial derivative is calculated in almost the
+            same
+            way as we would expected of single valued variables with one small exception. <br><br>Firstly, we can
+            mutliply out the brackets to remove the norm nomeclacture from the equation
         </p>
 
         <p class="knowledge_eq">
             $$\frac{\partial{C}}{\partial{m}} = \frac{\partial{(d-Gm)^{T}(d-Gm)}}{\partial{m}} = 0$$
-            $$\frac{\partial{C}}{\partial{m}} = \frac{\partial{d^{T}d - m^{T}G^{T}d - d^{T}Gm + m^{T}G^{T}Gm}}{\partial{m}} = 0$$
+            $$\frac{\partial{C}}{\partial{m}} = \frac{\partial{d^{T}d}}{\partial{m}} - \frac{m^{T}G^{T}d}{\partial{m}} -
+            \frac{d^{T}Gm}{\partial{m}} + \frac{m^{T}G^{T}Gm}{\partial{m}} = 0$$
         </p>
         <p class="knowledge_p">
-            We can ignore the first terms as it is independent of $in m$in. We can also note that the partial derivative of $in m^{T}G^{T}d$in is the same as $in d^{T}Gm$in ($in G^{T}d$in) and in the final term can be solved in a similar way which leads us to the following equation
+            We can ignore the first terms as it is independent of $in m$in. We can also note that the partial derivative
+            of $in m^{T}G^{T}d$in is the same as $in d^{T}Gm$in (they both equal $in d^{T}G$in) and in the final term can be solved in a
+            similar way which leads us to the following equation
         </p>
 
         <p class="knowledge_eq">
@@ -235,16 +242,17 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         </p>
 
         <p class="knowledge_p">
-            We can then rearrange, dvide by 2, and take the tranpose of both sides of the equation to retrieve
+            We can then rearrange, divide by 2, and take the tranpose of both sides of the equation to retrieve
         </p>
         <p class="knowledge_eq">
             $$ G^{T}d = mG^{T}G$$
         </p>
 
         <p class="knowledge_p">
-            An equation we have seen before and know how to re-arrange to retrieve the framework equation we derived above (see the start of this topic for detailed derivation).
+            An equation we have seen before and know how to re-arrange to retrieve the framework equation we derived
+            above (see the start of this topic for detailed derivation).
         </p>
-    
+
         <p class="knowledge_p">
             We've shown how to perform linear least squares inversion (sometimes calledd Guass-Newton inversion) and
             have gone through an example of using that framework to fit a polynomial curve to a dataset of athlete's
@@ -252,7 +260,7 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
             used a straight line, or a 5<sub>th</sub> order polynomial, and what would the difference between the two
             be? That is something we'll discuss in the next section on bias and variance.
         </p>
-        
+
         <a class="next-page" href="bias_and_variance.html">Bias and Variance</a>
 
 
