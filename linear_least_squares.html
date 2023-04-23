@@ -98,14 +98,14 @@
             use to fit the data, which is denoted by the vector of values $in y $in. <br><br>
         </p>
         <p class="knowledge_eq">
-        $$G=
-        \begin{bmatrix}
-        x_{1}^{m} & x_{1}^{m-1} & \ldots & x_{1}^{2} & x_{1} & 1 \\
-        x_{2}^{m} & x_{2}^{m-1} & \ldots & x_{2}^{2} & x_{2} & 1 \\
-        \vdots & \vdots & \ddots & \vdots & \vdots & \vdots\\
-        x_{Nd}^{m} & x_{Nd}^{m-1} & \ldots & x_{Nd}^{2} & x_{Nd} & 1 \\
-        \end{bmatrix}
-        $$
+            $$G=
+            \begin{bmatrix}
+            x_{1}^{m} & x_{1}^{m-1} & \ldots & x_{1}^{2} & x_{1} & 1 \\
+            x_{2}^{m} & x_{2}^{m-1} & \ldots & x_{2}^{2} & x_{2} & 1 \\
+            \vdots & \vdots & \ddots & \vdots & \vdots & \vdots\\
+            x_{Nd}^{m} & x_{Nd}^{m-1} & \ldots & x_{Nd}^{2} & x_{Nd} & 1 \\
+            \end{bmatrix}
+            $$
         </p>
 
         <p class="knowledge_p">
@@ -194,14 +194,67 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         <img src="resources/myImgs/lls_2poly_0reg.png"
             alt="A plot of athlete's weight Vs height with a fitted second order polynomial" class="knowledge_img">
 
+        <h2 class="knowledge_h2">An alternative and potentially more useful derivation of the linear least squares equation</h2>
+
+        <p class="knowledge_p">
+            An alternative derivation of the Gauss-Newton method is formulate the problem as a cost function, which we
+            have already done in the python python function "getCost", which defines the cost function as an L2-norm of
+            the recorded data, $in d$in, and the estimated data based on the model parameters, $in \hat{d}$in.
+        </p>
+
+        <p class="knowledge_eq">
+            $$C = ||d-Gm||^{2}$$
+        </p>
+
+        <p class="knowledge_p">
+            In this approach we want to minimize the cost function with regards to the model parameters. Which is to
+            say, find me the model paramters which create estiamted values as close to the recorded data as possible. We
+            can do this by taking the first partial derivative of the cost function with respect to the model parameters
+            and setting this to zero.
+        </p>
+
+        <p class="knowledge_eq">
+            $$ \frac{\partial{C}}{\partial{m}} = \frac{\partial{||d-Gm||^{2}}}{\partial{m}} = 0$$
+        </p>
+
+        <p class="knowledge_p">
+            Evn though this partial derivative involves martices, the partial derivative is calculated in almost the same
+            way as we would expected of single valued variables with one small exception. <br><br>Firstly, we can mutliply out the brackets to remove the norm nomeclacture from the equation
+        </p>
+
+        <p class="knowledge_eq">
+            $$\frac{\partial{C}}{\partial{m}} = \frac{\partial{(d-Gm)^{T}(d-Gm)}}{\partial{m}} = 0$$
+            $$\frac{\partial{C}}{\partial{m}} = \frac{\partial{d^{T}d - m^{T}G^{T}d - d^{T}Gm + m^{T}G^{T}Gm}}{\partial{m}} = 0$$
+        </p>
+        <p class="knowledge_p">
+            We can ignore the first terms as it is independent of $in m$in. We can also note that the partial derivative of $in m^{T}G^{T}d$in is the same as $in d^{T}Gm$in ($in G^{T}d$in) and in the final term can be solved in a similar way which leads us to the following equation
+        </p>
+
+        <p class="knowledge_eq">
+            $$ -2d^{T}G + 2m^{T}GG^{T} = 0$$
+        </p>
+
+        <p class="knowledge_p">
+            We can then rearrange, dvide by 2, and take the tranpose of both sides of the equation to retrieve
+        </p>
+        <p class="knowledge_eq">
+            $$ G^{T}d = mG^{T}G$$
+        </p>
+
+        <p class="knowledge_p">
+            An equation we have seen before and know how to re-arrange to retrieve the framework equation we derived above (see the start of this topic for detailed derivation).
+        </p>
+    
         <p class="knowledge_p">
             We've shown how to perform linear least squares inversion (sometimes calledd Guass-Newton inversion) and
-            have gone through an example of using that framework to fit a polynomial curve to a dataset of Athlete's
+            have gone through an example of using that framework to fit a polynomial curve to a dataset of athlete's
             weigh Vs height. We choose to use a 2<sup>nd</sup> order polynomial in our exmaple but why? We could have
             used a straight line, or a 5<sub>th</sub> order polynomial, and what would the difference between the two
             be? That is something we'll discuss in the next section on bias and variance.
         </p>
+        
         <a class="next-page" href="bias_and_variance.html">Bias and Variance</a>
+
 
     </div>
 

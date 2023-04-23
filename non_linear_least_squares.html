@@ -102,29 +102,102 @@
         </p>
 
         <p class="knowledge_eq">
-            d=G(m)
+            $d=G(m)$$
         </p>
 
         <p class="knowledge_p">
-            Here the data kernel is a functino fo the model variables as we cannot separate the two. In non-linear least
-            squares we don't attempt to directly solve this equation for the modle variables as was done before in the
-            linear case. Instead we start with a guess of the model parameters and attempt to update these model
-            variables using the misfit between the expected values using these model variables and the recorded values.
-            How to define this update and traverse this misfit space is an entire subject in itself, optimization, that
-            we will cover separately. Here we will derive and implement a basic optimization called gradient descent.
+            Here the data kernel is a function of the model variables as we cannot separate the two. In non-linear least
+            squares we don't attempt to directly solve this equation for the model variables, as was done before in the
+            linear case. Instead, we start with a guess of the model parameters and attempt to update these model
+            variables using the misfit between the calculated measurements using these model variables and the recorded
+            values. How to define this update and traverse this misfit space is an entire subject in itself;
+            optimization. This we will cover separately. Here we will derive and implement a basic optimization called
+            gradient descent.
         </p>
 
-        <!-- TODO - still need to complete this derivation section -->
-        <p class="knowledge_p">PAGE UNDER CONSTRUCTION!</p>
+        <p class="knowledge_p">
+            The equation we have been working with thus far can be reformatted into a cost function that we to minimize.
+            We have already seen the cost function in action in the previous topics on linear least suqares inversion,
+            where we let the cost function be the L2-norm of the recorded values and the values that the model suggests
+            they should be. In other words we can define our cost to be
+        </p>
 
         <p class="knowledge_eq">
-            $$m_{k+1} = m_{k} - (J_{k}^{T} J_{k})^{-1} J_{k}^{T} r_{k} $$
+            $$C = ||d-G(m)||^{2}$$
         </p>
 
-        <p class="knowledge_p">where</p>
+        <p class="knowledge_p">
+            Where $in C$in is the cost. The aim is to minimize this cost function, the lower the value of the cost
+            function the better the fit. However, we aren't trying to update the initial guess model parameters directly
+            for the best estimate model paramters in one go, we are looking for an incrermental uplift on the current
+            model parameter estimates, $in \delta m$in, such that the new model parameters lower the cost function
+            metric. In this case the equation of the cost function becomes
+        </p>
+
+        <p class="knowledge_eq">
+            $$C = ||d-G(m_{k} + \delta m_{k})||^{2}$$
+        </p>
+
+        <p class="knowledge_p">
+            And we are trying to optimize for the model update, $in \delta m$in. To do this though we will need to
+            expand the data kernal, $in G$in, such that we have a function that is solely dependent upon the model
+            update, $in \delta m$in. We can do this by performing a Taylor series expansion on the cost function.
+        </p>
+
+
+        <p class="knowledge_eq">
+            $$ g(m_{0} + \Delta m) = g(m_{0}) + \frac{\partial g}{\partial m}\big\rvert_{m_{0}} \Delta m +
+            \frac{1}{2}\Delta m^{T} \frac{\partial^{2} g}{\partial m^{2}}\big\rvert_{m_{0}} \Delta m $$
+        </p>
+
+        <p class="knowledge_p">
+            If we assume that the model update is small then any quadratic terms in the change in model parameters (or
+            higher) can be regarded as negligable and ignored. The partial derivative of the data kernel with respect to
+            the model parameters evaluated at the current model parameter estimates, $in \frac{\partial g}{\partial
+            m}\big\rvert_{m_{0}}$in, is referred to as the Jacobian and usually given the symbol $in J$in. Along with
+            ignoring factors in the expansion which are at least quadratic in the model update leads to
+        </p>
 
         <p class="knowledge_eq">
             $$ J = \frac{\partial g}{\partial m}\big\rvert_{m_{0}} $$
+            $$d = g(m_{0}) +J\Delta m $$
+        </p>
+
+        <p class="knowledge_p">
+            Which means the cost function to optimize is
+        </p>
+
+        <p class="knowledge_eq">
+            $$c =
+            \begin{Vmatrix}
+            g(m_{0}) - Y + J\Delta m
+            \end{Vmatrix}^{2}
+            $$
+        </p>
+
+        <p class="knowledge_p">
+            From here we can take the usual approach of taking he derivative with respect to the parameter to optimize
+            and set the result to 0, re-arrange and solve for the parameter to optimize, which in this case is the model
+            update.
+        </p>
+
+        <p class="knowledge_eq">
+            $\frac{\partial C}{\partial m} = 2J^{T}( g(m_{0}) - Y + J\Delta m) = 0$
+            $J^{T} (g(m_{0}) - Y) + J^{T} J\Delta m = 0$
+            $J^{T} J\Delta m = -J^{T} (g(m_{0}) - Y) $
+
+            $\Delta m = -(J^{T} J)^{-1} J^{T} (g(m_{0}) - Y) $
+
+            $m = m_{0} - (J^{T} J)^{-1} J^{T} r $
+        </p>
+
+        <p class="knowledge_p">
+            What is listed here is for the first iteration only due to the $in m_{0}$in term but it is trivial to
+            generalize this to any iteration
+        </p>
+
+        <p class="knowledge_eq">
+            $m_{k+1} = m_{k} - (J_{k}^{T} J_{k})^{-1} J_{k}^{T} r_{k} $
         </p>
 
         <h2 class="knowledge_h2">Solving our Gaussian fitting problem with non-linear least squares inversion</h2>
@@ -157,12 +230,135 @@
             -A\frac{(x-\bar{x})^{2}}{\sigma^{3}}e^{\frac{-(x-\bar{x})^{2}}{2\sigma^{2}}}} $
         </p>
 
-        <!-- !TODO - plot is low res, consider making figure bigger when printing, consider putting printed model separate -->
-        <img src="resources/myImgs/moores_law_lin_plot.png"
-            alt="A plot of athlete's weight Vs height with a fitted second order polynomial" class="knowledge_img">
+        <p class="knowledge_p">
+            Now that we have our equation for the Jacobian entries for each model parameter then all that is left to do
+            is read in the data, generate some initial guess of the model parameters and iterate around this loop until
+            the misfit doesn't seem to be decresing. Note that there is lot to unpack here in terms of when to stop
+            iterations, where put your initial guess etc. and these issues can have very large impacts on the results
+            you obtain. The optimization algorithm may not (probably won't) find a optimum result if the initial guess
+            is too far from the best fit model paramters. This is because, among other things, there could be little
+            misfit surface gradient to guide your optimization algorithm, and the further you get away from the global
+            minimum (if there is one) then the more likely you optimization algorithm is to fall into a local and not
+            global minimum.
+        </p>
 
-        <pre><code class="language-python">print(model)</code></pre>
+        <h2 class="knowledge_h2">Solving our Gaussian fitting problem with non-linear least squares inversion - python
+            implementation</h2>
 
+        <p class="knowledge_p">
+            First, as usual, let us read in some libraries and define the functions that will be doing the invesion,
+            based on the equations we derived above
+        </p>
+
+        <pre><code class="language-python">import json
+import numpy as np
+import matplotlib.pyplot as plt</code></pre>
+
+        <pre><code class="language-python">def plotting(x, y, m, xlabel, ylabel, polynomial_degree):
+    plt.figure()
+    plt.plot(x,y,'x')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(f'{ylabel} Vs {xlabel}')
+    xfine = np.linspace(np.min(x), np.max(x), 10*len(x))
+    G = makeG(xfine, polynomial_degree)
+    yfine = np.dot(G,m)
+    plt.plot(xfine,yfine,'r--')
+
+def makeG(x, m):
+    G = np.zeros((len(x), 3))
+    exponent = np.exp(-np.power((x - m[1]),2)/(2*np.power(m[2],2)))
+    G[:,0] = -exponent
+    G[:,1] = -m[0] * (x - m[1]) * exponent / np.power(m[2],2)
+    G[:,2] = -m[0] * np.power((x - m[1]),2) * exponent /(np.power(m[2],3))
+    return G
+
+def forwardModel(x, m):
+    y_hat = 1 - m[0] * np.exp(-np.power((x - m[1]),2)/(2*np.power(m[2],2)))
+    return y_hat
+
+def linearInversion(x, y, m, lam):
+    G = makeG(x, m)
+    Gt = G.T
+    GtG = np.dot(Gt, G)
+    GtGinv = np.linalg.inv(GtG)
+    m = np.dot(np.dot(GtGinv, Gt), y)
+    return m</code></pre>
+
+        <p class="knowledge_p">
+            Note that not much has changed in the helper functions we have defined to carry out our inversion compared
+            to the linear least squares case. The only structural difference is that we have now have a "forwardModel"
+            function to generate the expected output data given the current model parameters that will be used to
+            compared with the recorded data.
+        </p>
+
+        <p class="knowledge_p">
+            The next thing we do is load the infrared spectrometry data from the JSON file, which can be accomplished
+            via the inbuilt JSON package, and normalize the data by it's median, making sure that the baseline is set to
+            1.
+        </p>
+
+        <pre><code class="language-python">file = 'G263.7.json'
+with open(file, 'r') as f:
+    js = json.load(f)
+
+for key in js:
+    js[key]['y'] = js[key]['y'] - np.median(js[key]['y']) + 1.0</code></pre>
+
+        <p class="knowledge_p">
+            We know need to figure out how to provide a good initial estimate of the model parameters. This will depend
+            on the individual problem you are solving adn the domain expertise that could be utilized (or even
+            required). In this problem we know we are trying to fit Gaussian curves and need to generate an initial
+            guess for the amplitude, location, and width of the Gaussian. We can get a good estimate of the initial
+            amplitude and location by simply looking for the minimum amplitude (value) in the array of data, minimum
+            becuase it is an inverted Gaussian. The width we could estimate via some means but for this toy example we
+            can just look at the data (which is a valid method for smaller datasets) and use an initial guess of 5$in
+            \mu m$in.
+        </p>
+
+        <pre><code class="language-python">index = np.argmin(y)
+m = [1.0 - y[index], x[index], 5.0]</code></pre>
+
+        <p class="knowledge_p">
+            Now that we have the the helper functions defined and an initial guess all that is left is to loop through
+            updating those initial model parameters with the update given by the non-linear inversion.
+        </p>
+
+        <pre><code class="language-python">Nepochs = 10
+norm_history = 0
+for iteration in range(Nepochs):
+    y_hat = forwardModel(x, m)
+    r = y_hat - y
+    dm = linearInversion(x, r, m)
+    m -= dm
+    plt.plot(x,y)
+    plt.plot(x,y_hat);plt.show()
+    print(f'data norm: {np.linalg.norm(r,2)} model norm: {np.linalg.norm(dm)}')
+    if np.abs(np.linalg.norm(r,2) - norm_history) < 0.01:
+        break
+    else:
+        norm_history = np.linalg.norm(r,2)</code></pre>
+
+        <p class="knowledge_p">
+            You may notice that we added an if statement into the loop to compare the current loss with the loss
+            generated from the previous model. If the loss is below a given threshold, hard-coded to 0.01 here, then the
+            iterations terminate. This is known as an early stopping criteria and the are widely used to save compute
+            and time resources. After a while, the model becomes as good as it can be, it gets stuck in a minimum of the
+            loss surface, hopefully the global minimum, but iterating further won't change teh results of the model or
+            the paramters and is wasted energy.
+        </p>
+
+        <!-- TODO - put gif of model iteration here, include the cost function value in the plots. -->
+
+        <p class="knowledge_p">
+            Interestingly, our initial guess of the best model parameters for fitting a single Gaussian were off by
+            quite a bit. This is because the methhod we used to estimate the initial model paramters used the largest
+            amplitude. However, if one wants to reduce the cost function as much as possible then it is more important
+            to account for the Gaussian that has the largest contribution to cost function, which in this case is one
+            that is lower in amplitude but much wider, giving it a great area within our data range than the Gaussain
+            corresponding to our initial guess. This is a cautionary tail, your initial guess may be correct, but it may
+            not be "best" answer.
+        </p>
 
         <a class="next-page" href="non_linear_least_squares.html">Non-linear least squares inversion</a>
 
