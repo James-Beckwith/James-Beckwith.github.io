@@ -45,30 +45,54 @@
 
         <h1 class="knowledge_h1">Least Squares Inversion</h1>
 
-        <h2 class="knowledge_h2"></h2>
+        <h2 class="knowledge_h2">Defining a problem and a cost function</h2>
 
         <p class="knowledge_p">
-            Starting with the general equation form of our problem statement
+            Let us assume that we have some data that we have acquired, $in d $in, and we want to understand the
+            underlying physical parameters, $in m $in, that gave rise to this data thourgh some mapping transformation
+            that we will encode in what we will call a forward operator, $in G $in. Then the general form of our problem
+            to solve is given by
         </p>
+
         <p class="knowledge_eq">$$d = Gm$$</p>
+
         <p class="knowledge_p">
-            we can now start to
-            re-arrange this formula for the model variables, $in m $in, which we are interested in determining. <br><br>
-            The first thing to note is that the data kernel, G, is typically a matrix with a size of $in N_{d} $in x $in
-            N_{m} $in where $in N_{d} $in and $in N_{m} $in are the number of data samples and the number of model
-            variables respectively. Although we will highlight this later, it might be obviosu that this matrix can
+            Unless otherwise stated we'll assume that the data, $in d $in, and model, $in m $in, are from a Gaussian
+            distribution and have associated errors, although we shall omit them for the time being and revisit them in
+            the covariance matrices section. The choice of a Gaussian distribution is arbritrary but leads us to
+            defining the following cost function (also referred to as a misfit function).
+        </p>
+
+        <p class="knowledge_eq">$$C = (d Gm)^{T}(d-Gm)$$</p>
+
+        <p class="knowledge_p">
+            As previously mentioned, we have omited the data and model errors as well as any a priori model information.
+            We'll leave this until the covariance section. For more mathematical rigour around these definitions please
+            see the book "Inverse Theory Problems" by Albert Tarantola.
+        </p>
+
+        <h2 class="knowledge_h2">Solving over general problem</h2>
+
+        <p class="knowledge_p">
+            Starting with the general equation form of our problem statement we can now start to re-arrange this formula
+            for the model variables, $in m $in, which we are interested in determining. <br><br>
+            The first thing to note is that the forward operator, G, is typically a matrix with a size of $in N_{d} $in
+            x $in N_{m} $in where $in N_{d} $in and $in N_{m} $in are the number of data samples and the number of model
+            variables respectively. Although we will highlight this later, it might be obvious that this matrix can
             become very large and difficult to handle if either the number of data points or the dimensionality of the
             model space is large.<br><br>
             Given that $in G $in is a matrix then we can't simply divide both sides of the equation by G, unless it is a
-            square matrix with non-zero determinant. Therefore, generally, we must first "make G square". We can do this
-            rather simply by multiplying on the left of this equation by the transpose of the data kernel matrix, $in
-            G^{T} $in.
+            square matrix with non-zero determinant, in which case we can simply multiple both sides of the equation by
+            the inverse of the forward operator to determine the solution, this is known as the Cramer solution.
+            Therefore, generally, we must first "make G square". We can do this rather simply by multiplying on the left
+            of this equation by the transpose of the forward operator matrix, $in G^{T} $in.
         </p>
         <p class="knowledge_eq">$$G^{T}d = G^{T}Gm$$</p>
         <p class="knowledge_p">
             This means that the product $in G^{T}G $in now has dimensions of $in N_{s} $in x $in N_{s} $in, i.e. it is
-            square. Now that we can be sure that this "squared" data kernel is square in dimensionality then we can
-            multiple both sides of the equation by the inverse of this squared data kernel.
+            square. Now that we can be sure that this "squared" forward operator is square in dimensionality then we can
+            multiple both sides of the equation by the inverse of this squared forward operator. Note that this would
+            only make sense if $in G^{T}G $in is invertible, which is to say that it is over-determined in this case.
         </p>
         <p class="knowledge_eq">$$(G^{T}G)^{-1} G^{T}d = (G^{T}G)^{-1} (G^{T}G) m$$</p>
         <p class="knowledge_p">
@@ -81,7 +105,10 @@
 
         <p class="knowledge_eq">$$m = (G^{T}G)^{-1} G^{T}d$$</p>
 
-        <!-- TODO filler about cautions on inverse of GTG -->
+        <p class="knowledge_p">
+            The advantage of assuming Gaussian probabiltiies, and using the least-squares method, is the relative ease of the solution, as we have seen. A disadvantage is
+            that it is relatively sensitive to outlying data, a few data points with a large misfit can cause the optimization of a least squares problem to not converge.
+        </p>
 
         <h2 class="knowledge_h2">Polynomial curve fitting example</h2>
         <p class="knowledge_p">
@@ -194,7 +221,7 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         <img src="resources/myImgs/lls_2poly_0reg.png"
             alt="A plot of athlete's weight Vs height with a fitted second order polynomial" class="knowledge_img">
 
-        <h2 class="knowledge_h2">An alternative and potentially more useful derivation of the linear least squares
+        <h2 class="knowledge_h2">An alternative, and potentially more useful, derivation of the linear least squares
             equation</h2>
 
         <p class="knowledge_p">
@@ -233,7 +260,8 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         </p>
         <p class="knowledge_p">
             We can ignore the first terms as it is independent of $in m$in. We can also note that the partial derivative
-            of $in m^{T}G^{T}d$in is the same as $in d^{T}Gm$in (they both equal $in d^{T}G$in) and in the final term can be solved in a
+            of $in m^{T}G^{T}d$in is the same as $in d^{T}Gm$in (they both equal $in d^{T}G$in) and in the final term
+            can be solved in a
             similar way which leads us to the following equation
         </p>
 
@@ -257,7 +285,7 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
             We've shown how to perform linear least squares inversion (sometimes calledd Guass-Newton inversion) and
             have gone through an example of using that framework to fit a polynomial curve to a dataset of athlete's
             weigh Vs height. We choose to use a 2<sup>nd</sup> order polynomial in our exmaple but why? We could have
-            used a straight line, or a 5<sub>th</sub> order polynomial, and what would the difference between the two
+            used a straight line, or a 5<sup>th</sup> order polynomial, and what would the difference between the two
             be? That is something we'll discuss in the next section on bias and variance.
         </p>
 
