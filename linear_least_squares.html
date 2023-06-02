@@ -49,7 +49,7 @@
 
         <p class="knowledge_p">
             Let us assume that we have some data that we have acquired, $in d $in, and we want to understand the
-            underlying physical parameters, $in m $in, that gave rise to this data thourgh some mapping transformation
+            underlying physical parameters, $in m $in, that gave rise to this data through some mapping transformation
             that we will encode in what we will call a forward operator, $in G $in. Then the general form of our problem
             to solve is given by
         </p>
@@ -59,14 +59,14 @@
         <p class="knowledge_p">
             Unless otherwise stated we'll assume that the data, $in d $in, and model, $in m $in, are from a Gaussian
             distribution and have associated errors, although we shall omit them for the time being and revisit them in
-            the covariance matrices section. The choice of a Gaussian distribution is arbritrary but leads us to
+            the covariance matrices section. The choice of a Gaussian distribution is arbitrary but leads us to
             defining the following cost function (also referred to as a misfit function).
         </p>
 
-        <p class="knowledge_eq">$$C = (d Gm)^{T}(d-Gm)$$</p>
+        <p class="knowledge_eq">$$C = (d-Gm)^{T}(d-Gm)$$</p>
 
         <p class="knowledge_p">
-            As previously mentioned, we have omited the data and model errors as well as any a priori model information.
+            As previously mentioned, we have omitted the data and model errors as well as any a priori model information.
             We'll leave this until the covariance section. For more mathematical rigour around these definitions please
             see the book "Inverse Theory Problems" by Albert Tarantola.
         </p>
@@ -106,7 +106,7 @@
         <p class="knowledge_eq">$$m = (G^{T}G)^{-1} G^{T}d$$</p>
 
         <p class="knowledge_p">
-            The advantage of assuming Gaussian probabiltiies, and using the least-squares method, is the relative ease of the solution, as we have seen. A disadvantage is
+            The advantage of assuming Gaussian probabilities, and using the least-squares method, is the relative ease of the solution, as we have seen. A disadvantage is
             that it is relatively sensitive to outlying data, a few data points with a large misfit can cause the optimization of a least squares problem to not converge.
         </p>
 
@@ -237,7 +237,7 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
 
         <p class="knowledge_p">
             In this approach we want to minimize the cost function with regards to the model parameters. Which is to
-            say, find me the model paramters which create estiamted values as close to the recorded data as possible. We
+            say, find me the model parameters which create estimated values as close to the recorded data as possible. We
             can do this by taking the first partial derivative of the cost function with respect to the model parameters
             and setting this to zero.
         </p>
@@ -247,10 +247,10 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         </p>
 
         <p class="knowledge_p">
-            Evn though this partial derivative involves martices, the partial derivative is calculated in almost the
+            Evn though this partial derivative involves matrices, the partial derivative is calculated in almost the
             same
             way as we would expected of single valued variables with one small exception. <br><br>Firstly, we can
-            mutliply out the brackets to remove the norm nomeclacture from the equation
+            multiply out the brackets to remove the norm nomenclature from the equation
         </p>
 
         <p class="knowledge_eq">
@@ -270,7 +270,7 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         </p>
 
         <p class="knowledge_p">
-            We can then rearrange, divide by 2, and take the tranpose of both sides of the equation to retrieve
+            We can then rearrange, divide by 2, and take the transpose of both sides of the equation to retrieve
         </p>
         <p class="knowledge_eq">
             $$ G^{T}d = mG^{T}G$$
@@ -282,9 +282,9 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         </p>
 
         <p class="knowledge_p">
-            We've shown how to perform linear least squares inversion (sometimes calledd Guass-Newton inversion) and
+            We've shown how to perform linear least squares inversion (sometimes called Gauss-Newton inversion) and
             have gone through an example of using that framework to fit a polynomial curve to a dataset of athlete's
-            weigh Vs height. We choose to use a 2<sup>nd</sup> order polynomial in our exmaple but why? We could have
+            weigh Vs height. We choose to use a 2<sup>nd</sup> order polynomial in our example but why? We could have
             used a straight line, or a 5<sup>th</sup> order polynomial, and what would the difference between the two
             be? That is something we'll discuss in the next section on bias and variance.
         </p>

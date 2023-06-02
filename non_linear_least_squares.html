@@ -57,12 +57,12 @@
             The problem we will look at involves infra-red spectrometry data from massive young stellar objects (MYSOs).
             These objects are young stars that are still forming and gaining mass from accretion disks that deposit
             material on the star. As part of this process, jets of material are expelled at the poles of the MYSOs. By
-            looking at absorption spectra from these MYSOs of certain transition of hydrogen with kmnown frequencies
+            looking at absorption spectra from these MYSOs of certain transition of hydrogen with known frequencies
             then we can approximate how much mass is being ejected from these poles and gain a slight understanding of
-            whether the pole is oreinatated towards or away from us. The width and depth of the absorption spectra give
-            an understanding of the mass loss rate as a larger cone will have a wider range of incendence anlges with
+            whether the pole is orientated towards or away from us. The width and depth of the absorption spectra give
+            an understanding of the mass loss rate as a larger cone will have a wider range of incidence angles with
             the Earth and hence a wider spectrum (as some is blue shifted and some is red-shifted due to the velocity of
-            material relative to the Earth) and a depper absorption line is a indicative of a higher density of
+            material relative to the Earth) and a deeper absorption line is a indicative of a higher density of
             material. So what do these spectra look like?
         </p>
 
@@ -70,12 +70,12 @@
             alt="Infra-red spectrometry data for a massive young stellar object (MYSO)" class="knowledge_img">
 
         <p class="knowledge_p">
-            Given this it makes sense to try to fit Gaussian curves to the absoprtion spectra to give an estimate of the
+            Given this it makes sense to try to fit Gaussian curves to the absorption spectra to give an estimate of the
             width (the standard deviation of the Gaussian) and the depth (the amplitude of the Gaussian). The centre
-            point of the Gaussian can also tell us whether the absorption line as a wholeis red- or blue-shifted to give
+            point of the Gaussian can also tell us whether the absorption line as a whole is red- or blue-shifted to give
             us some information about the speed of the MYSO relative to the Earth. So what would be the form of the
-            Gaussian we want to fit? First note that the absorption spectra could be modelled not by Gaussians but by
-            "negative" Gaussians with a baseline at 1 (i.e. just add 1 to the distribution). It is also apparent that
+            Gaussian we want to fit? First note that the absorption spectra could be modelled not by multiple Gaussian curves but by
+            "negative" Gaussian curves with a baseline at 1 (i.e. just add 1 to the distribution). It is also apparent that
             the absorption spectra could have multiple different components which can be attributed to distinct ejection
             events or periods, but we'll only focus on fitting a single Gaussian here. The form of the model
             representing the absorption spectra (or at least one Gaussian component of it) is:
@@ -87,7 +87,7 @@
 
         <p class="knowledge_p">
             where $in A $in is the amplitude of the Gaussian, $in \bar{x}$in is the location of the mean of the
-            Gaussian, and $in\sigma$in is the standard deviation of the Guassian.<br><br>It is clear to see that is
+            Gaussian, and $in\sigma$in is the standard deviation of the Gaussian.<br><br>It is clear to see that is
             isn't really possible to linearly separate the three model variables from the measurement axis, $in x$in, in
             this equation. So if we can't solve this problem as a linear least squares problem then one solution is to
             solve it as a non-linear least squares problem.
@@ -119,7 +119,7 @@
 
         <p class="knowledge_p">
             The equation we have been working with thus far can be reformatted into a cost function that we to minimize.
-            We have already seen the cost function in action in the previous topics on linear least suqares inversion,
+            We have already seen the cost function in action in the previous topics on linear least squares inversion,
             where we let the cost function be the L2-norm of the recorded values and the values that the model suggests
             they should be. In other words we can define our cost to be
         </p>
@@ -131,7 +131,7 @@
         <p class="knowledge_p">
             Where $in C$in is the cost. The aim is to minimize this cost function, the lower the value of the cost
             function the better the fit. However, we aren't trying to update the initial guess model parameters directly
-            for the best estimate model paramters in one go, we are looking for an incrermental uplift on the current
+            for the best estimate model parameters in one go, we are looking for an incremental uplift on the current
             model parameter estimates, $in \delta m$in, such that the new model parameters lower the cost function
             metric. In this case the equation of the cost function becomes
         </p>
@@ -142,7 +142,7 @@
 
         <p class="knowledge_p">
             And we are trying to optimize for the model update, $in \delta m$in. To do this though we will need to
-            expand the data kernal, $in G$in, such that we have a function that is solely dependent upon the model
+            expand the data kernel, $in G$in, such that we have a function that is solely dependent upon the model
             update, $in \delta m$in. We can do this by performing a Taylor series expansion on the cost function around
             the current model estimate, $in m_{k}$in.
         </p>
@@ -155,7 +155,7 @@
 
         <p class="knowledge_p">
             If we assume that the model update is small then any quadratic terms in the change in model parameters (or
-            higher) can be regarded as negligable and ignored. The partial derivative of the forward operator with
+            higher) can be regarded as negligible and ignored. The partial derivative of the forward operator with
             respect to
             the model parameters evaluated at the current model parameter estimates, $in \frac{\partial g}{\partial
             m}\big\rvert_{m_{0}}$in, is referred to as the Jacobian and usually given the symbol $in J$in. Along with
@@ -237,10 +237,10 @@
         <p class="knowledge_p">
             Now that we have our equation for the Jacobian entries for each model parameter then all that is left to do
             is read in the data, generate some initial guess of the model parameters and iterate around this loop until
-            the misfit doesn't seem to be decresing. Note that there is lot to unpack here in terms of when to stop
+            the misfit doesn't seem to be decreasing. Note that there is lot to unpack here in terms of when to stop
             iterations, where put your initial guess etc. and these issues can have very large impacts on the results
             you obtain. The optimization algorithm may not (probably won't) find a optimum result if the initial guess
-            is too far from the best fit model paramters. This is because, among other things, there could be little
+            is too far from the best fit model parameters. This is because, among other things, there could be little
             misfit surface gradient to guide your optimization algorithm, and the further you get away from the global
             minimum (if there is one) then the more likely you optimization algorithm is to fall into a local and not
             global minimum.
@@ -250,7 +250,7 @@
             implementation</h2>
 
         <p class="knowledge_p">
-            First, as usual, let us read in some libraries and define the functions that will be doing the invesion,
+            First, as usual, let us read in some libraries and define the functions that will be doing the inversion,
             based on the equations we derived above
         </p>
 
@@ -315,7 +315,7 @@ for key in js:
             required). In this problem we know we are trying to fit Gaussian curves and need to generate an initial
             guess for the amplitude, location, and width of the Gaussian. We can get a good estimate of the initial
             amplitude and location by simply looking for the minimum amplitude (value) in the array of data, minimum
-            becuase it is an inverted Gaussian. The width we could estimate via some means but for this toy example we
+            because it is an inverted Gaussian. The width we could estimate via some means but for this toy example we
             can just look at the data (which is a valid method for smaller datasets) and use an initial guess of 5$in
             \mu m$in.
         </p>
@@ -349,17 +349,17 @@ for iteration in range(Nepochs):
             iterations terminate. This is known as an early stopping criteria and the are widely used to save compute
             and time resources. After a while, the model becomes as good as it can be, it gets stuck in a minimum of the
             loss surface, hopefully the global minimum, but iterating further won't change teh results of the model or
-            the paramters and is wasted energy.
+            the parameters and is wasted energy.
         </p>
 
         <!-- TODO - put gif of model iteration here, include the cost function value in the plots. -->
 
         <p class="knowledge_p">
             Interestingly, our initial guess of the best model parameters for fitting a single Gaussian were off by
-            quite a bit. This is because the methhod we used to estimate the initial model paramters used the largest
+            quite a bit. This is because the method we used to estimate the initial model parameters used the largest
             amplitude. However, if one wants to reduce the cost function as much as possible then it is more important
             to account for the Gaussian that has the largest contribution to cost function, which in this case is one
-            that is lower in amplitude but much wider, giving it a great area within our data range than the Gaussain
+            that is lower in amplitude but much wider, giving it a great area within our data range than the Gaussian
             corresponding to our initial guess. This is a cautionary tail, your initial guess may be correct, but it may
             not be "best" answer.
         </p>
@@ -369,7 +369,7 @@ for iteration in range(Nepochs):
             possible to implement solutions yourself. Our focus has been on implementation and not mathematical rigour.
             However, in doing so we have overlooked a few key points that need to addressed before diving into the next
             addition to our set of tools to solve inverse theory problems. In the next topic we'll cover some more
-            fundamental information and learn how to implement, and estimate errors from inverse theory solutions.
+            fundamental information and learn how to implement, and estimate errors from solution to our inversion problems.
         </p>
 
         <a class="next-page" href="covariance_matrices.html">Fundamentals and Covariance Matrices</a>

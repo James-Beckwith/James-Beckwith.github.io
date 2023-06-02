@@ -60,7 +60,7 @@
         <h2 class="knowledge_h2">An example of a non-linear problem that can be linearized</h2>
         <p class="knowledge_p">
             In our problem we have at the moment we will look at Moore's Law, which is a theory that states that the
-            average number of transistors in intrgrated circuits doubles every 2 years (approximately). We will fit an
+            average number of transistors in integrated circuits doubles every 2 years (approximately). We will fit an
             exponential curve to data of the number of transistors in integrated circuits over the years to see if this
             rule holds. The form of the curve to fit a basic exponential of the form
         </p>
@@ -107,11 +107,11 @@ year = df[1].values.T</code></pre>
 
         <p class="knowledge_p">
             Note that we have taken the transpose of the data values, this is important as the inverse procedure
-            involves mutliplying matrices in which case the orientation of the data is important. For instance, if we
+            involves multiplying matrices in which case the orientation of the data is important. For instance, if we
             want the matrix product $in G^{T}G $in to be square and of size $in N_{m} $in x $in N_{m} $in then the forward
             operator needs to be created such that each row corresponds to the environmental variables for each specific
             data example, i.e. in this example each row corresponds to the specific time instance of the recorded data.
-            If the data was arrranged differntly then the calculation couldn't be done using the equation we have set
+            If the data was arranged differently then the calculation couldn't be done using the equation we have set
             out thus far. You could reformulate the equation for this new paradigm though.
         </p>
 
@@ -129,7 +129,7 @@ plotting(transistors, year, model, 'ln(transistors)','year', polynomial_degree)<
 
         <p class="knowledge_p">
             The model we have fit agrees remarkably well with Moore's law and shows that the average nuber of
-            transistors in an integrated ciurcuit is doubling every 2.03 years (to 2 decimal places).
+            transistors in an integrated circuit is doubling every 2.03 years (to 2 decimal places).
         </p>
 
         <p class="knowledge_p">
