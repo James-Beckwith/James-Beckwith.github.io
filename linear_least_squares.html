@@ -284,12 +284,14 @@ plotting(weight, height, model, 'weight','height', polynomial_degree)</code></pr
         <p class="knowledge_p">
             We've shown how to perform linear least squares inversion (sometimes called Gauss-Newton inversion) and
             have gone through an example of using that framework to fit a polynomial curve to a dataset of athlete's
-            weigh Vs height. We choose to use a 2<sup>nd</sup> order polynomial in our example but why? We could have
-            used a straight line, or a 5<sup>th</sup> order polynomial, and what would the difference between the two
-            be? That is something we'll discuss in the next section on bias and variance.
+            weigh Vs height. But what about situations where the forward model isn't obviously linearly separable 
+            from the data? There are instances where this is the case, and we shall look at those in the introduction 
+            to non-linear inverse theory section. But first, let's look at an instance where the forward modeling 
+            operator doesn't look like it can be broken down into the constituent model and physics but can with a 
+            little mathematical trickery.
         </p>
 
-        <a class="next-page" href="bias_and_variance.html">Bias and Variance</a>
+        <a class="next-page" href="inverse_force_to_linear.html">Simple mathematical tricks to force a linear problem</a>
 
 
     </div>

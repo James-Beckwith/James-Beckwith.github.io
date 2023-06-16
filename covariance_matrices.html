@@ -44,21 +44,63 @@
     <div class="main-container">
 
         <h1 class="knowledge_h1">Covariance matrices - nothing is certain</h1>
-        <h2 class="knowledge_h2">Everything is Guassian (so far)</h2>
-        <!-- <p class="knowledge_p">
-            An important point that has been overlooked in the explanations thus far is that what we are calling our
-            estimated model paramters is in fact the mean of an a posteriori model distribution. This a posteriori
-            distribution is Gaussian in nature where the mean is given by the model solution and the posterior model
-            covariance matrix defines the shape. We must assume that the input data and model are also Gaussian
-            distributed each with their own defiend covariance matrice. These matrices we have, thus far, assumed to be
-            the identity matrix (as well as assuming that the a priori model information is zero) which has allowed us
-            to omit them from our equations.
-        </p> -->
 
+        <h2 class="knowledge_h2">Everything is Gaussian (so far)</h2>
 
         <p class="knowledge_p">
-
+            As was stated in the introduction to linear inverse theory topic, "we'll assume that the data, $in d $in,
+            and model, $in m $in, are from a Gaussian distribution and have associated errors". We subsequently ignored
+            the variance terms when we derived our cost function. So let's now be concrete and lay out what our cost
+            function ought to be if we included those terms. We'll also include a model prior as well along with all
+            associated errors and assume the model is linear, however we have already seen how to solve non-linear
+            problems in the introduction to non-linear inverse theory section and the same workflow applies here.
         </p>
+
+        <p class="knowledge_eq">$$C = ||d-Gm||^{2}_{d} + ||m-m_{prior}||^{2}_{m}$$</p>
+
+        <p class="knowledge_p">
+            Here a subscript to the L2-norm denotes that the norm subject to the variance present in the parameter
+            shown. Concretely this would provide the following cost function when we expand the L2-norm
+        </p>
+
+        <p class="knowledge_eq">$$C = (d-Gm)^{T}C_{d}(d-Gm) + (m-m_{prior})^{T}C_{m}(m-m_{prior})$$</p>
+
+        <p class="knowledge_p">
+            Here the $inC_{x}$in variable denotes the covariance matrix for the variable x. The covariance matrix,
+            $inC_{x}$in has size equal to $inN_{x} X N_{x}$in where the diagonal terms denote the variance of each
+            element of $inx$in and the off-diagonal terms denote the covariance of the elements of $x$ with each other.
+            The derivation of the equation for the solution of m follows the same process as for the linear case and the
+            resultant equation for the solution is
+        </p>
+
+        <p class="knowledge_eq">
+            $$ m = (G^{T}C_{d}^{-1}G + C_{m}^{-1})^{-1} (G^{T}C_{d}^{-1}d + C_{m}^{-1}m_{prior}) $$
+        </p>
+
+        <p class="knowledge_p">
+            An important point that has been overlooked in the explanations thus far is that what we are calling our
+            estimated model parameters are in fact the mean of an a posteriori model distribution. This a posteriori
+            distribution is Gaussian in nature where the mean is given by the model solution and the posterior model
+            covariance matrix defines the shape. We must assume that the input data and model are also Gaussian
+            distributed each with their own defined covariance matrices.
+        </p>
+
+        <p class="knowledge_p">
+            The a posteriori model covariance matrix is given by
+        </p>
+
+        <p class="knowledge_eq">$$ \tilde{C_{m}} = (G^{T}C_{d}^{-1}G + C_{m}^{-1})^{-1} $$</p>
+
+        <p class="knowledge_p">
+            We now have a framework for solving our problems, whether they are linear, pseudo-linear, or non-linear for
+            some model parameters. Typically though, we have some idea of what our solution might be, or at least the
+            general shape or values, so how can we impart this knowledge into our problem such that we can constrain the
+            inversion and direct, or guide, it towards the kind of solution we expect? This process is typically called
+            regularization and will be the theme of our next series of topics on various ways to regularize our
+            inversions.
+        </p>
+
+        <a class="next-page" href="intro_to_regularization.html">Introduction to regularization</a>
 
     </div>
 
