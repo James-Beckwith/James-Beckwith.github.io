@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8">
+    <!-- Plotly.js -->
+    <!-- the local version requires the use of Plotly.newPlot -->
+    <script src="../../scripts/plotly-2.18.2.min.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+    <script src="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script> -->
+    <!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/queries.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="../../index.html">Home</a></li>
+                <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="#">About us</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">Introduction to Inverse Theory</h1>
+
+        <h2 class="knowledge_h2">Measuring</h2>
+
+        <p class="knowledge_p">
+            In many areas of life we measure things, even without knowing, we measure our heart rate, the speed of our
+            car, the amount of money in bank, the number of days to our next holiday. As humans, we love to measure. But
+            what is typically of interest is not necessarily what we measure, the observations, but rather what infers
+            about the underlying characteristics of what gave rise to those measurements. For instance, we might measure
+            the size of a house and how many bedrooms and bathrooms it has. The purpose is not necessarily to know this
+            information but to infer from it how good that house is, with the basic assumption here being that a bigger
+            house is a better house, which is typically borne out by house prices. Not all problems are as simple, and
+            indeed there is a lot more that goes into the value of a house than simply the number of rooms! Take, for
+            example, reconstructing the internal structure of the earth from seismological observations. This spectrum
+            of difficulty in problems has an underlying commonality though; that there is some reasoning or physics as
+            to why those observations exists. For instance; house price is related to house size, or the physics behind
+            the acoustic wave equation for the previous examples. As scientists have endeavored to determine, for
+            thousands of years, this underlying order of the universe (and "things" in general); we tend to have a
+            fairly good grasp of the physics that give rise to the observations. If we don't we can always approximate
+            this or employ mathematical models to estimate the physics or reasoning.
+        </p>
+
+        <h2 class="knowledge_h2">Measurements are cool, but we're really interested in what gave rise to them</h2>
+        <p class="knowledge_p">
+            We are thus left with some observations and some approximation of the reasoning or physics that gave rise to
+            these observations but not the thing we really want; the conditions that gave rise to those observations. In
+            most circumstances, understanding these conditions is the end goal. For instance, we may observation some
+            amount of Xrays at various detectors but it is the reconstructed computerized tomography (CT) image (which
+            gave rise to the variation in amplitude of energy received at each receiver) that is important. It isn't the
+            seismograph responses that are useful but what they can tell us about the epicenter of the earthquake that
+            gave rise to the seismic activity. Beyond this, by knowing the conditions that gave rise to the current
+            observations, we can predict into the future (with varying degrees of accuracy) also.<br><br>
+            An approach to determining these conditions, typically called model variables, from the observations (also
+            called data, measurements, and other such names) and knowledge the physics or reasoning that lead to the
+            observations is called inversion, but you will also see it referred to as optimization. Due to it being a
+            key aspect of operational research then this may also get confused with inversion (operational research
+            would also include other areas such as time series analysis and statistical modelling).
+        </p>
+        <h2 class="knowledge_h2">Relation to data science and modelling</h2>
+        <p class="knowledge_p">
+            In many problems in data science, it concerns itself with finding an approximation of that physics/reasoning
+            that maps between some input model data, and some output decision; does this photo (input) contain a cat
+            (yes/no, the result). Neural networks, for instance, do this by finding approximating that physics/reasoning
+            with some complex network of weights and simple transforms which are to be determined. By contrast,
+            inversion takes the output and a best guess of teh physics/reasoning that gave rise to those outputs to
+            determine what the initial conditions were. <br><br>
+            In this respect, we can see some problems as having three parts; an input, some mappings or transformations
+            which represent the physics or reasoning, and some output. The missing component determines what approach to
+            take to; if you are missing knowledge of the mapping then use data science, if you don't know the initial
+            conditions or input then use inversion, and if you don't know the results then you can forward model the
+            inputs through the transformation to predict the output.
+        </p>
+
+
+        <a class="next-page" href="linear_least_squares.html">Linear Least Squares Inversion</a>
+
+
+    </div>
+
+    <div class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+        work is
+        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    </div>
+
+
+</body>
+
+<!-- use this to run the code syntax highlighting in highlight.js -->
+<!-- <script>hljs.highlightAll();</script> -->
+<!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+<script src="../../scripts/prism.js"></script>
+
+</html>
