@@ -33,7 +33,7 @@
             <ul class="main-nav js--main-nav">
                 <li><a href="../../index.html">Home</a></li>
                 <!-- TODO maybe thinking about changing Home to a home icon instead?-->
-                <li><a herf="#">About us</a></li>
+                <li><a herf="../../about.html">About</a></li>
                 <li><a herf="#">Education</a></li>
                 <li><a herf="#">Resources</a></li>
             </ul>
@@ -43,10 +43,33 @@
 
     <div class="main-container">
 
-        <h1 class="knowledge_h1">Page under construction</h1>
 
         <h1 class="knowledge_h1">A linear regression example</h1>
 
+        <p class="knowledge_p">In this section there is a brief example of solving the same problem that we solve in the
+            case of inverse theory but from the perspective of using a machine learning package and a single neuron
+            neural network. See here for reference of how the problem is solved from an inverse theory perspective:
+            <a href="../inverse_theory/inverse_force_to_linear.html">Simple mathematical tricks to force a linear
+                problem</a>
+        </p>
+
+        <p class="knowledge_p">
+            In this problem we will look at Moore's Law, which is a theory that states that the
+            average number of transistors in integrated circuits doubles every 2 years (approximately). We will fit an
+            exponential curve to data of the number of transistors in integrated circuits over the years to see if this
+            rule holds. The form of the curve to fit a basic exponential of the form.
+        </p>
+
+        <p class="knowledge_p">
+            We will follow the same logic as in the inverse theory solution and first pre-process the data by taking the
+            natural log of number of transistors, which are the "data labels" in this example.
+        </p>
+
+
+        <p class="knowledge_p">
+            First we need to import necessary packages. Here, we use pandas to read the data, matplotlib to plot the
+            data, and tensorflow and keras as the framework for running the regression.
+        </p>
         <pre><code class="language-python">import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -58,9 +81,35 @@ from tensorflow.keras import layers
 np.set_printoptions(precision=3, suppress=True)
 print(tf.__version__)</code></pre>
 
-        <pre><code class="language-python">df = pd.read_csv('../../../inverse_theory/codes/02_linear_regression/moores_law.csv', header=None)
+        <p class="knowledge_p">
+            We now need to read the data in from the CSV file, there are many ways to do this, the choice of using
+            pandas here is arbitrary. We extract the necessary columns for the training labels and inputs and apply some
+            pre-processing.
+        </p>
+
+        <pre><code class="language-python">df = pd.read_csv('moores_law.csv', header=None)
 train_labels = np.log(df[0].values)
 train_feature = df[1].values</code></pre>
+
+        <p class="knowledge_p">
+            Although not strictly necessary for a single feature input like in this example, it is always good practice
+            to apply some normalization to your input features so we shall instantiate a normalizer here.
+            <br><br>
+            The `tf.keras.layers.Normalization` is a clean and simple way to add feature normalization into your
+            model. The first step is to create the layer. Note the use of the axis key word here is important. From the
+            documentation:
+            <br><br>
+            <i>"...the axis or axes that should have a separate mean and variance for each index in the shape. For
+                example,
+                if shape is (None, 5) and axis=1, the layer will track 5 separate mean and variance values for the last
+                axis. If axis is set to None, the layer will normalize all elements in the input by a scalar mean and
+                variance. Defaults to -1, where the last axis of the input is assumed to be a feature dimension and is
+                normalized per index. Note that in the specific case of batched scalar inputs where the only axis is the
+                batch axis, the default will normalize each index in the batch separately. In this case, consider
+                passing axis=None."</i>
+            <br><br>
+            As we have a 1D array (a single feature vector) then it is prudent for us to pass in `axis=None`.
+        </p>
 
         <pre><code class="language-python">normalizer = tf.keras.layers.Normalization(axis=None)
 normalizer.adapt(np.array(train_feature))
@@ -69,6 +118,13 @@ train_feature = np.array(train_feature)
 normalizer = layers.Normalization(input_shape=[1,], axis=None)
 normalizer.adapt(train_feature)</code></pre>
 
+        <!-- TODO - explain why we are using the sequential package from Keras -->
+        <p class="knowledge_p">
+            Next, it's time to define our model. We'll be using a sequential model from Keras in which we apply our
+            normalization and send the result into a dense neural network layer with a single neuron. We know that from
+            the previous topic this is equivalent to a linear regression.
+        </p>
+
         <pre><code class="language-python">linear_model = tf.keras.Sequential([
     normalizer,
     layers.Dense(units=1)
@@ -76,22 +132,23 @@ normalizer.adapt(train_feature)</code></pre>
 
 linear_model.summary()</code></pre>
 
-        <p class="knowledge_pyprint">
-            Model: "sequential_1"<br>
-            _________________________________________________________________<br>
-            Layer (type)                Output Shape              Param #   <br>
-            =================================================================<br>
-            normalization_5 (Normalizat  (None, 1)                3         <br>
-            ion)                                                            <br>
-                                                                            <br>
-            dense_1 (Dense)             (None, 1)                 2         <br>
-            <br>
-            =================================================================<br>
-            Total params: 5<br>
-            Trainable params: 2<br>
-            Non-trainable params: 3<br>
-            _________________________________________________________________<br>
-        </p>
+        <pre><p class="knowledge_pyprint">
+            Model: "sequential_1"
+            _________________________________________________________________
+             Layer (type)                Output Shape              Param #   
+            =================================================================
+             normalization_5 (Normalizat  (None, 1)                3         
+             ion)                                                            
+                                                                             
+             dense_1 (Dense)             (None, 1)                 2         
+                                                                             
+            =================================================================
+            Total params: 5
+            Trainable params: 2
+            Non-trainable params: 3
+            _________________________________________________________________
+        </p></pre>
+
 
         <pre><code class="language-python">linear_model.compile(
 optimizer=tf.keras.optimizers.Adam(learning_rate=0.1),
@@ -118,7 +175,7 @@ history = linear_model.fit(
 
 plot_loss(history)</code></pre>
 
-<!-- put plot of loss history here -->
+        <!-- put plot of loss history here -->
 
         <pre><code class="language-python">def plot_predictions(x, y, xpred, ypred, xlabel, ylabel):
     plt.figure()
@@ -136,15 +193,16 @@ ypred = linear_model.predict(xpred)
 
 plot_predictions(train_feature, train_labels, xpred, ypred, '', '')</code></pre>
 
-<!-- !TODO - put plot of predicted line here -->
+        <!-- !TODO - put plot of predicted line here -->
 
-    <div class="license">
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
-                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
-        work is
-        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
-            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-    </div>
+        <div class="license">
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+                    alt="Creative Commons License" style="border-width:0"
+                    src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+            work is
+            licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+                Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+        </div>
 
 
 </body>
