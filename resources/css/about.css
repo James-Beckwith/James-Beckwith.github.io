@@ -1,3 +1,19 @@
 table tr td {
     padding-right: 20px;
+    padding-left: 2px;
+}
+
+tr:hover {background-color: RGB(54,183,250);}
+
+/* the plus term here means only table td elements that are next to  */
+table tr td +td { border-left: 2px solid RGB(54,183,250);}
+
+/* TODO - need to add a better background image, think about making it half screen size such that the scrolling will be fluid and not a sharp transition to the next sections*/
+.about_header_div {
+    background-image: linear-gradient(rgba(125,125,125,0.8), rgba(125,125,125,0.8)), url(../myImgs/thought_bulb.jpg);
+    background-size: cover;
+    background-position: center; 
+    height: 100vh;
+    background-color: white;
+    background-attachment: fixed;
 }

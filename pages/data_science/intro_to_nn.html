@@ -45,6 +45,85 @@
 
         <h1 class="knowledge_h1">Page under construction</h1>
 
+        <p class="knowledge_p">
+            A neural network is a network of neurons which take some input features from a training dataset and map them
+            to
+        </p>
+
+        <h2 class="knowledge_h2">What is a neuron?</h2>
+        <p class="knowledge_p">
+            A neuron is a basic building block a neural network. A neural network, at a basic level, is a network of
+            neurons which process some input feature(s), potentially with some other information, to produce a result.
+            The result is numerical but this could be interpreted as the probability that the output belongs to a
+            certain class, mapped back to a word embedding (more on that in the natural language processing section) or
+            interpreted as an image. But what <i>is</i> a neuron?
+        </p>
+        <p class="knowledge_p">
+            A neuron, can be any basic building block that can be defined mathematically. Not everything that can be
+            defined will be useful as a neuron in a neural network though and some standard useful forms of neurons have
+            been discovered and used over the years since they were first described by McCulloch and Pitts in 1943 (<a
+                href="https://link.springer.com/article/10.1007/BF02478259">link</a>).
+        </p>
+        <p class="knowledge_p">
+            One of the most simple form of a neuron is one with a weight matrix, $in W$in, an additive bias, $in b$in,
+            and an activation function, $in \textit{g}$in. The cross-product of any input feature vector with the weight
+            matrix is formed, the additive bias added, and then this result is passed through the activation function
+            (more on activation functions later as there are numerous commonly used functions with different uses).
+        </p>
+
+        <img src="../../resources/myImgs/ds/basic_neuron.png" alt="A diagram of a basic neuron" class="knowledge_img">
+
+        <p class="knowledge_p">
+            Mathematically, a neuron is represented by:
+        </p>
+        <p class="knowledge_eq">
+            $$\theta(X) = g\left(W^{T}X + b\right)$$
+        </p>
+
+        <p class="knowledge_p">
+            The weight matrix, $in W$in, has dimensionality equal to the number of input features by the number of
+            expected output dimensions, which could be 1 or could be many. The bias term, $in b$in, is a single value
+            that is added.
+        </p>
+
+        <p class="knowledge_p">
+            These neurons can be combined into layers, connected to one-another in linear or cyclical manners, and in
+            some instance be much more complicated than is shown here. The entire collection of neurons is referred to
+            as the network, whose job it is to map the input features to an expected value or class. Which neurons are
+            used and how they are arranged and connected is referred to as the neural network architecture. These neural
+            networks have to be trained to produce the mapping between input features and output labels.
+        </p>
+
+        <h2 class="knowledge_h2">How to train a neural network</h2>
+
+        <p class="knowledge_p">
+            Certain neural network architectures might have their own unique learning processes or workflows but a
+            basic, generic workflow for training a neural network is the following:
+        </p>
+
+        <pre>Initalize the weights
+while a stopping metric is not met:
+    Pass the input features through the network to form a prediction
+    Form the current loss between the predicted output and the true labels using the chosen loss function
+    Back propagate this loss through the network to update the weights and biases using the chosen optimizer
+        </pre>
+
+        <p class="knowledge_p">
+            There are three key parts to this generic workflow:
+        <ol>
+            <li>Stopping metric</li>
+            <li>Loss Function</li>
+            <li>Optimizer</li>
+        </ol>
+        We'll go through each of these in turn to describe what they are used for but we will go into loss functions and
+        optimizers in their own dedicated pages.
+        </p>
+
+        <h2>Stopping metrics in neural network training</h2>
+
+    </div>
+
+
     <div class="license">
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
                 style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
@@ -52,8 +131,6 @@
         licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
             Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
     </div>
-
-
 </body>
 
 <!-- use this to run the code syntax highlighting in highlight.js -->
