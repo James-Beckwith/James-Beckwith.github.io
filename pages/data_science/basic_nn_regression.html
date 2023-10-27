@@ -171,7 +171,7 @@ _________________________________________________________________
         <pre><code class="language-python">history = linear_model.fit(
     train_feature,
     train_target,
-    epochs=100,
+    epochs=200,
     # Suppress logging.
     verbose=0,
     # Calculate validation results on 25% of the training data.
@@ -180,7 +180,8 @@ _________________________________________________________________
         <h2 class="knowledge_h2">visualization of training metrics</h2>
 
         <p class="knowledge_p">
-            Now that the training has finished we can visualize the model's training progress using the metrics stored in the <i>history</i> object:
+            Now that the training has finished we can visualize the model's training progress using the metrics stored
+            in the <i>history</i> object:
         </p>
 
         <pre><code class="language-python">def plot_loss(history):
@@ -193,7 +194,44 @@ _________________________________________________________________
 
 plot_loss(history)</code></pre>
 
-        <img src="../../resources/myImgs/ds/basic_nn_regression_accuracy_plot.png" alt="A plot of the evolution of the training and validation set accuracy over the training iterations." class="knowledge_img">
+        <img src="../../resources/myImgs/ds/basic_nn_regression_accuracy_plot.png"
+            alt="A plot of the evolution of the training and validation set accuracy over the training iterations."
+            class="knowledge_img">
+
+
+        <p class="knowledge_p">
+            Now that we have a trained a model, let's see what the predictions look like on our test set. The easiest
+            way to do this is to plot the predictions from the test features against the test labels. Ideally, they will
+            be the same and we can visually inspect this by plotting them alongside a y=x line.
+        </p>
+
+        <pre><code class="language-python">prediction = linear_model.predict(test_feature)
+def plot_predictions(target, prediction, xlabel, ylabel):
+    min_target = min(target)
+    max_target = max(target)
+    plt.figure()
+    plt.plot(target, prediction, 'x', label='Data')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(f'{ylabel} Vs {xlabel}')
+    plt.plot([min_target, max_target],[min_target,max_target],'r--', label='x=y')
+    plt.legend()
+
+plot_predictions(test_target, prediction, '', '')</code></pre>
+
+        <img src="../../resources/myImgs/ds/basic_nn_regression_predictions_plot.png"
+            alt="A plot of the predicted labels against the test dataset labels." class="knowledge_img">
+
+        <p class="knowledge_p">
+            Of course, the predictions aren't perfect and likely never will be for most problems as all recorded data
+            has some measurement error. Beyond measurement error, problems that we solve are typically not a result of
+            simply physical processes. If they are a result of physical processes they are typically ones we don't fully
+            understand (if we did then we wouldn't need a machine learning solution!). Given these two sources of
+            uncertainty it is likely that you'll never have a model that can always produce perfect predictions, but you
+            should still aim for it. The key is to balance the training time and cost against the accuracy gains you'll
+            see. Aim for a model that produces predictions that satisfactory for your problem, trying to attain
+            perfection can be expensive and time-consuming.
+        </p>
 
 
         <div class="license">
@@ -204,7 +242,6 @@ plot_loss(history)</code></pre>
             licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
                 Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
         </div>
-
 
 </body>
 
