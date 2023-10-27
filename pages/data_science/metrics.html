@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8">
+    <!-- Plotly.js -->
+    <!-- the local version requires the use of Plotly.newPlot -->
+    <script src="../../scripts/plotly-2.18.2.min.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+    <script src="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script> -->
+    <!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/queries.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="../../index.html">Home</a></li>
+                <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="../../about.html">About</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">Page under construction</h1>
+
+        <h1>What is accuracy and how can we estimate how well our models are performing?</h1>
+
+        <p class="knowledge_p">
+            Accuracy may seem like a simple concept; how well our model predicts some class or value. But how do we
+            define that concept of "how well our model performs"? We could just sum up all the correct classifications
+            and present that as a percentage, or sum up the error of our predictions for values, but depending on the
+            problem we are trying to solve this might not be the best method for conveying the accuracy of our model. In
+            this topic we'll look at a few common measures of accuracy that can be used and why you may want to use one
+            over another in certain circumstances. We'll start with basic measures of accuracy and proceed to more
+            complex measures. It's important to note that accuracy and loss are closely related but not necessarily the
+            same. A high loss can be incurred but one very anomalous result or prediction but the accuracy might be very
+            high, as only a few (maybe even one) value was wrong.
+        </p>
+
+        <p class="knowledge_p">
+            Another key point to consider when thinking about accuracy/loss metrics is how easily they are to optimize.
+            These functions will, in most cases, be used to determine the error that will be back-propagated through a
+            model in order to update the model's parameters to better estimate the expected labels given the input
+            features. So, we need to know how to move from that error to an update in the model parameters. Some
+            accuracy and loss metrics are easier to optimize than others and this should also be taken into when
+            determining which accuracy/loss metric to use as this can impact the speed and cost of any model training.
+        </p>
+
+        <!-- !TODO - remember what the latex is for the infinity symbol -->
+        <h2>How close are the predictions? L-x measures</h2>
+
+        <p class="knowledge_p">
+            One of the most basic measures of accuracy is to take the predictions from your model and subtract them from
+            the ground truth values given in the labels. This is obviously only possible for supervised regression
+            models, as it doesn't make much sense to subtract classes of models from predictions (how would you subtract
+            a classification of cat from dog? we can somewhat do this abstraction but we will leave this to another
+            topic as it isn't helpful when talking about accuracy and loss). In it's simplest form this measure of
+            accuracy is the mean absolute error (MAE) which is also know as the L1 norm. It is, as the name would
+            suggest, the average value of the sum of all the absolute differences between the predictions and the ground
+            truth. In mathematical form this is equivalent to:
+        </p>
+
+        <p class="knowledge_eq">
+            $$ MAE = \frac{1}{n}\sum_{i=0}^{i=n}|x-\hat{x}_{i}| $$
+        </p>
+
+        <p class="knowledge_p">
+            This is generally seen as a very useful measure of loss (or accuracy) as the MAE is representative of the
+            average error in any point. However, it might be that we don't mind a little bit of error in the
+            predictions, after all nobody is perfect! Maybe we would also like to put more weight on those predictions
+            that are far from the truth instead.
+        </p>
+
+        <p class="knowledge_p">
+            We can do this by simply raising the difference between the prediction and the ground truth to an even
+            power. This will do two things; make sure the resultant contribution to the accuracy/loss from each
+            prediction is positive, and that large errors ar more important in determining accuracy than smaller errors.
+            Commonly the error is raised to the second power (squared) as this doesn't overly emphasize outlying errors
+            and is also easy to optimize than an L1 norm. This is referred to as the mean squared error (MSE) or the L2
+            norm and has the following form:
+        </p>
+
+        <p class="knowledge_eq">
+            $$ MSE = \frac{1}{n}\sum_{i=0}^{i=n}||x-\hat{x}_{i}||^{2} $$
+        </p>
+
+        <p class="knowledge_p">
+            Other L-norms exist are used for various tasks such as the L0 and L$in \infty$in norm which are defined by
+        </p>
+
+    </div>
+
+
+    <div class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+        work is
+        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    </div>
+</body>
+
+<!-- use this to run the code syntax highlighting in highlight.js -->
+<!-- <script>hljs.highlightAll();</script> -->
+<!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+<script src="../../scripts/prism.js"></script>
+
+</html>

@@ -46,8 +46,13 @@
         <h1 class="knowledge_h1">Page under construction</h1>
 
         <p class="knowledge_p">
-            A neural network is a network of neurons which take some input features from a training dataset and map them
-            to
+            A neural network is a network of neurons which is designed to minimize some loss function. This function
+            typically takes the form of some accuracy between some input feature(s) from a training dataset and some
+            target label(s). But it could also be that the network (or agent) is trained to minimize some loss (or
+            maximize some reward) function by performing tasks. However it happens, the network takes some input
+            feature(s), maps them to some output(s) and then a loss is defined based on these outputs (more commonly
+            called predictions in many contexts) and the desired outputs.
+            <!-- TODO - finish this section -->
         </p>
 
         <h2 class="knowledge_h2">What is a neuron?</h2>
@@ -101,25 +106,105 @@
             basic, generic workflow for training a neural network is the following:
         </p>
 
-        <pre>Initalize the weights
+        <pre class="knowledge_algorithm">Initialize the weights
 while a stopping metric is not met:
     Pass the input features through the network to form a prediction
     Form the current loss between the predicted output and the true labels using the chosen loss function
-    Back propagate this loss through the network to update the weights and biases using the chosen optimizer
-        </pre>
+    Back propagate this loss through the network to update the weights and biases using the chosen optimizer</pre>
+
+        <!-- TODO - put a simple example in tensorflow to bring the reader directly into "doing something" -->
 
         <p class="knowledge_p">
-            There are three key parts to this generic workflow:
+            Note that iterative nature of the learning process, it typically takes many iterations to move from a
+            network with an initial set weights and biases to one that can predict the value or class that you want.
+            There are three key parts to this generic workflow beyond the iterative nature:
+            <!-- TODO - indent ordered lists inside p tags -->
         <ol>
-            <li>Stopping metric</li>
             <li>Loss Function</li>
             <li>Optimizer</li>
+            <li>Stopping metric</li>
         </ol>
-        We'll go through each of these in turn to describe what they are used for but we will go into loss functions and
+        We'll go through each of these in turn to describe what they are used for, but we will go into loss functions
+        and
         optimizers in their own dedicated pages.
         </p>
 
-        <h2>Stopping metrics in neural network training</h2>
+        <h2 class="knowledge_h2">Loss Function</h2>
+        <p class="knowledge_p">
+            The loss function is what is used to determine how well the current network can map the input features to
+            the target label(s) for the training data set. It is also typically the starting point for back-propagating
+            any errors through the network to update the weights, biases, and any other network parameters so that the
+            network can perform better at it's job.
+        </p>
+        <p class="knowledge_p">
+            There are a lot of different loss functions, each of which have their pros and cons and some are better
+            suited for certain network architectures and end-goals, for instance are you trying train a classification
+            model, a regression model, a reinforcement learning model etc.
+            <!-- TODO - put in a link to the tensorflow page for loss functions -->
+        </p>
+
+        <h2 class="knowledge_h2">Optimizer</h2>
+        <p class="knowledge_p">
+            Now that you know how well you're model is performing thanks to the loss function we can now use this
+            information to update the network. But how exactly do we do this? This is the role of the optimizer. The
+            optimizer is a certain algorithm that informs you of how to take you're loss function and propagate this
+            back through the network to update it to perform better next time.
+            <!-- TODO - finish this section and put link to tensorflow optimizers -->
+        </p>
+
+        <h2 class="knowledge_h2">Stopping metrics in neural network training</h2>
+        <!-- TODO - link to tensorflow stopping criterion? -->
+        <p class="knowledge_p">
+            We don't want to be training our neural network indefinitely, after a while the training won't yield any
+            improvement in the model and could even eventually make the model worse. So, to optimize the training not
+            only for accuracy but also time and compute resources (which equate to money inevitably) we need to know
+            when to stop our training. This is the role of some rule or metric that we implement to determine when to
+            stop our iterative learning. These can be as simple as setting the number of iterations or more complicated
+            metrics based on statistics of the performance of the current network predictions on slices of the training
+            or test data sets. Some common training stopping metrics are outlined below but this is not an exhaustive
+            list by any means:
+        </p>
+
+        <h3>Number of Iterations</h3>
+
+        <p class="knowledge_p">
+            Most machine learning algorithms learn iteratively. They don't produce a result immediately in one
+            calculation but gradually refine the weights, biases, and other parameters in their network in order to
+            lower the loss function. The number of these iterations can be set and used a stopping criterion for the
+            learning. This is typically done at the start of an experiment when we might be testing different
+            architectures or feature engineering routines.
+        </p>
+
+        <h3>Loss function threshold</h3>
+
+        <p class="knowledge_p">
+            The loss function is what is used to determine how well the current network can map the input features to
+            the target label(s) for the training data set. It is also typically the starting point for back-propagating
+            any errors through the network to update the weights, biases, and any other network parameters so that the
+            network can perform better at it's job. However, if there is no error, the loss function is zero, then there
+            is nothing to back-propagate, no update to be made and continuing without making any other changes would be
+            futile. Having a loss function value of zero is only really possible on toy datasets without any noise or
+            errors, but a low loss function value could be met. When the loss is small, the update to the network is
+            also necessarily small and this could mean a negligible increase in test set accuracy and further training
+            of the network would not be cost effective. It makes sense then to impose a stopping criterion for a certain
+            level of loss function, i.e. when the loss function is below a certain value then stop training. This level
+            would represent an acceptable loss function value given the context of the problem.
+        </p>
+
+        <h3>Resource Constraint</h3>
+
+        <p class="knowledge_p">
+            This is more valid for cloud deployments of solutions but could also used for local deployments too. For
+            cloud deployments we may want to limit the spend on training, either because we are in a test phase or
+            because of time or monetary constraints. Like "number of iterations" this stopping criteria isn't a function
+            of the network or it's performance but of the resources we have available to train the network. Two of the
+            key limiting factors in training large neural networks is time and money. These networks require large
+            amounts of compute power to train, which is costly, and take a long time to train, which is again costly.
+            One can partially trade-off time for cost by using potentially slower compute resources but only if the
+            model can still be trained on these cheaper resources, most large models require a large amount of RAM to
+            train. Typically a time bound training regime is just a simple alternative to the number of iterations
+            stopping criterion and budgetary constraints can be imposed in many cloud platforms.
+        </p>
 
     </div>
 

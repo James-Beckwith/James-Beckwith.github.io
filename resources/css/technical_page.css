@@ -19,6 +19,12 @@ h1 {
   letter-spacing: -.5px;
 }
 
+h3 {
+  margin-bottom: 0;
+  text-align: left;
+  color: RGBA(90,166,225,1);
+}
+
 .main-container {
   line-height: 1.5;
   font-family: 'Inter', sans-serif;
@@ -55,4 +61,12 @@ h1 {
   color: black;
   background-color: white;
   align-self: center;
+}
+
+.knowledge_algorithm {
+  background-color: white;
+  color: black;
+}
+
+p ol li {
 }
