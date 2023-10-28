@@ -43,11 +43,13 @@
 
     <div class="main-container">
 
-        <h1 class="knowledge_h1">A linear regression example</h1>
+        <h1 class="knowledge_h1">A linear regression example with a fully connected network</h1>
 
-        <p class="knowledge_p">In this section there is a brief example of solving the same problem that we solve in the
-            case of inverse theory but from the perspective of using a machine learning package and a single neuron
-            neural network. See here for reference of how the problem is solved from an inverse theory perspective:
+        <p class="knowledge_p">In this section there is a brief example of solving a multi-feature linear regression
+            problem by using a fully connected neural network with 1 layer, so there aren't any hidden layers.
+            These kind of problems can also be solved using an inverse theory approach, and can be mathematically
+            formulated to be the same assuming that we have linear activation functions on our neurons. See here for
+            reference of how the problem of linear regression is solved from an inverse theory perspective:
             <a href="../inverse_theory/inverse_force_to_linear.html">Simple mathematical tricks to force a linear
                 problem</a>
         </p>
@@ -89,8 +91,7 @@ from sklearn.model_selection import train_test_split</code></pre>
             use the train_test_split function from sci-kit learn to make our train and test datasets
         </p>
 
-        <pre><code class="language-python">
-# load the dataset
+        <pre><code class="language-python"># load the dataset
 diabetes = datasets.load_diabetes()
 features = diabetes['data']
 target = diabetes['target']
@@ -100,7 +101,7 @@ train_feature, test_feature, train_target, test_target = train_test_split(
      features, target, test_size=0.05, random_state=42)</code></pre>
 
         <p class="knowledge_p">
-            Here we have split the data into train and test datasets using the <i>train_test_split
+            Here we have split the data into train and test datasets using the <i class="i_code">train_test_split
                 function</i> from sklearn.model_selection. We also use a fixed random state so that the training and
             test splits are consistent when we re-run the script
         </p>
@@ -108,14 +109,17 @@ train_feature, test_feature, train_target, test_target = train_test_split(
         <h2 class="knowledge_h2">Network Architecture</h2>
 
         <p class="knowledge_p">
-            Training a model with <i>tf.keras</i> typically starts by defining the model
-            architecture. Here, we use a <i>tf.keras.Sequential</i> model, which <a
+            Training a model with <i class="i_code">tf.keras</i> typically starts by defining the model
+            architecture. Here, we use a <i class="i_code">tf.keras.Sequential</i> model, which <a
                 href="https://www.tensorflow.org/guide/keras/sequential_model">represents a sequence of steps</a>. We
             will be training a linear regression model to attempt to map between the input data and the target feature
-            using a fully connected layer (<i>tf.keras.layers.Dense</i>) with a linear pass through activation function.
+            using a fully connected layer (<i class="i_code">tf.keras.layers.Dense</i>) with a linear pass through
+            activation function.
             If we don't specify an activation function in the creation of the fully connected layer
-            (<i>layers.Dense</i>), then a linear ($ing(x)=x$in) activation is used. The number of inputs can either be
-            set by the <i>input_shape</i> argument, or automatically when the model is run for the first time. Note,
+            (<i class="i_code">layers.Dense</i>), then a linear ($ing(x)=x$in) activation is used. The number of inputs
+            can either be
+            set by the <i class="i_code">input_shape</i> argument, or automatically when the model is run for the first
+            time. Note,
             however, that without defining the input shape we can't show a summary of the model (as the input shape will
             still be unknown to the model until we run data through it).
         </p>
@@ -142,12 +146,18 @@ Non-trainable params: 0
 _________________________________________________________________
         </p></pre>
 
+        <h2 class="knowledge_h2">Loss function and optimization</h2>
+
         <p class="knowledge_p">
-            Once we have built the model, we configure the training procedure using the Keras <i>Model.compile</i>
-            method. The most important arguments to compile are the <i>loss</i> and the <i>optimizer</i>, since these
+            Once we have built the model, we configure the training procedure using the Keras <i
+                class="i_code">Model.compile</i>
+            method. The most important arguments to compile are the <i class="i_code">loss</i> and the <i
+                class="i_code">optimizer</i>, since these
             define the loss function to be optimized which serves as a measure of accuracy for predicted outputs from
-            the model (<i>mean_absolute_error</i>) and how we should optimize the model based on the outputs of this
-            loss function (using the </i>tf.keras.optimizers.Adam</i> optimizer in this instance). We also specify a
+            the model (<i class="i_code">mean_absolute_error</i>) and how we should optimize the model based on the
+            outputs of this
+            loss function (using the <i class="i_code">tf.keras.optimizers.Adam</i> optimizer in this instance). We also
+            specify a
             hyper-parameter here for the optimizer in terms of the learning rate, which we'll discuss in the optimizers
             <a href="optimizers.html">topic</a>. This, for the time being is a choice that has been made using prior
             knowledge of what
@@ -156,16 +166,20 @@ _________________________________________________________________
         </p>
 
         <pre><code class="language-python">linear_model.compile(
-            optimizer=tf.keras.optimizers.Adam(learning_rate=0.2),
-            loss='mean_absolute_error')</code></pre>
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.2),
+    loss='mean_absolute_error')</code></pre>
 
         <h2 class="knowledge_h2">Training</h2>
 
         <p class="knowledge_p">
-            Once the model has been built and the training routine defined in the <i>compile</i> method then we can
-            execute training using the <i>fit</i> method of our Keras model. Another hyper-parameter of note here is the
+            Once the model has been built and the training routine defined in the <i class="i_code">compile</i> method
+            then we can
+            execute training using the <i class="i_code">fit</i> method of our Keras model. Another hyper-parameter of
+            note here is the
             number of epochs. This is set manually here, but can also be optimized using early stopping criteria. We
-            store the output of the training in the <i>history</i> variable for further
+            store the output of the training in the <i class="i_code">history</i> variable to be able to store, analyze,
+            and visualize
+            metrics about the model training.
         </p>
 
         <pre><code class="language-python">history = linear_model.fit(
@@ -233,6 +247,12 @@ plot_predictions(test_target, prediction, '', '')</code></pre>
             perfection can be expensive and time-consuming.
         </p>
 
+        <h2 class="knowledge_h2">Summary</h2>
+        <p class="knowledge_p">
+            In this topic we've gone through a simple example of building a fully connected neural regression network. Next, have a look at the maths behind the neural network we've built in this topic: 
+        </p>
+
+        <a class="next-page" href="intro_to_nn.html">Basics of Neural Networks</a>
 
         <div class="license">
             <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
