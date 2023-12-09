@@ -23,7 +23,6 @@ h1 {
 .accordion {
   line-height: 1.5;
   font-family: 'Inter', sans-serif;
-  /* TODO change this to be reactive to the screen width */
   width: 90%;
   margin: 100px auto;
   display: flex;
