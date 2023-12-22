@@ -14,7 +14,8 @@ body {
 h1 {
   font-size: 180%;
   /*   font-weight: 700; It will not make much difference from default style Bold is 700 only*/
-  color: black;
+  /* color: black; */
+  color: rgb(54,183,250);
   margin-bottom: 32px;
   letter-spacing: -.5px;
 }

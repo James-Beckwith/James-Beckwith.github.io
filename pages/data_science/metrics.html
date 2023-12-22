@@ -45,7 +45,17 @@
 
         <h1 class="knowledge_h1">Page under construction</h1>
 
-        <h1>What is accuracy and how can we estimate how well our models are performing?</h1>
+        <p class="knowledge_p">
+            What is accuracy and how can we estimate how well our models are performing? The purpose of this section is
+            to highlight some of the most common metrics that are used to analyse the performance of our models.
+        </p>
+
+        <ol>
+            <li><a href="#regression_title">skip to regression metrics</a> </li>
+            <li><a href="#classification_title">skip to classification metrics</a> </li>
+        </ol>
+
+        <h1 class="knowledge_h1" id="regression_title">Regression Metrics</h1>
 
         <p class="knowledge_p">
             Accuracy may seem like a simple concept; how well our model predicts some class or value. But how do we
@@ -64,11 +74,11 @@
             These functions will, in most cases, be used to determine the error that will be back-propagated through a
             model in order to update the model's parameters to better estimate the expected labels given the input
             features. So, we need to know how to move from that error to an update in the model parameters. Some
-            accuracy and loss metrics are easier to optimize than others and this should also be taken into when
-            determining which accuracy/loss metric to use as this can impact the speed and cost of any model training.
+            accuracy and loss metrics are easier to optimize than others and this should also be taken into
+            consideration when determining which accuracy/loss metric to use as this can impact the speed and cost of
+            any model training.
         </p>
 
-        <!-- !TODO - remember what the latex is for the infinity symbol -->
         <h2>How close are the predictions? L-x measures</h2>
 
         <p class="knowledge_p">
@@ -107,7 +117,145 @@
         </p>
 
         <p class="knowledge_p">
-            Other L-norms exist are used for various tasks such as the L0 and L$in \infty$in norm which are defined by
+            Other L-norms exist are used for various tasks and are typically defined by:
+        </p>
+
+        <p class="knowledge_eq">
+            $$ Lx = \frac{1}{n}\sum_{i=0}^{i=n}||x-\hat{x}_{i}||^{x} $$
+        </p>
+
+        <p class="knowledge_p">
+            There is also an L$in \infty$in norm which simply measures the maximum absolute value in the input vector.
+        </p>
+
+        <h1 class="knowledge_h1" id="classification_title">Classification Metrics</h1>
+
+        <h2 class="knowledge_h2">Accuracy</h2>
+
+        <p class="knowledge_p">
+            The simplest metric of how well our classification model is doing is simply the accuracy of the model which
+            is defined as the percentage of predictions that were correctly made on a hold out set of data that wasn't
+            seen by the model during training.
+        </p>
+
+        <h2 class="knowledge_h2">Negative log loss</h2>
+
+        <p class="knowledge_p">
+            <!-- TODO - fill this in -->
+        </p>
+
+        <h2 class="knowledge_h2">Confusion Matrix</h2>
+
+        <p class="knowledge_p">
+            In a binary classification system we are training a model to determine if a given set of input data belongs
+            to one of two classes. Typically, this is formulated as a hypothesis to be tested whereby we say "Does the
+            input data belong to class X? Yes/No?". If the input data set corresponds with the class being tested then
+            we say that this is a positive prediction, as we have answered in the affirmative to the hypothesis
+            question. The alternative is that it is a negative prediction, the input data does not correspond with class
+            X. The predictions of our model can be correct or incorrect, i.e. they align with the true class labels or
+            they don't. If the predictions align with the true class label then we say it is a "True" prediction, if
+            they don't then we say it is a "False" prediction. This means that we can have four distinct outcomes from
+            our model when tested against a test set of data:
+        </p>
+
+        <ol>
+            <li>True-Positive - The class label was Positive and the model correctly predicted it</li>
+            <li>True-Negative - The class label was Negative and the model correctly predicted it</li>
+            <li>False-Positive - The class label was Negative and the model incorrectly predicted it as Positive. Also
+                known as a type I error.</li>
+            <li>False-Negative - The class label was Positive and the model incorrectly predicted it as Negative. Also
+                known as a type II error.</li>
+        </ol>
+
+        <p>
+            These four parameters are typically displayed in a matrix called the confusion matrix.
+        </p>
+
+        <img src="../../resources/myImgs/ds/confusion_matrix.png" alt="A plot of a confusion matrix."
+            class="knowledge_img">
+
+        <h2 class="knowledge_h2">Precision, recall, F1, ROC, and AUC</h2>
+
+        <p class="knowledge_p">
+            That's a lot of terminology in this section title! We'll break it down piece by piece and gradually move
+            from the confusion matrix concept we just introduced to the AUC metric.
+        </p>
+
+        <p class="knowledge_p">
+            The number of true positive (tp), false negative (fn), and false positive (fp) values defined in the
+            previous section are used to define the precision and recall values as follows:
+        </p>
+
+        <p class="knowledge_eq">$in precision = \frac{tp}{tp+fp}$in</p>
+        <p class="knowledge_eq">$in recall = \frac{tp}{tp+fn}$in</p>
+
+        <p class="knowledge_p">
+            Recall is also referred to as the true positive rate as it measures the fraction of positive labels that
+            were corrected identified as positive. It is also referred to as sensitivity. Precision and Recall are
+            useful metrics to use in imbalanced datasets
+            to understand the performance of your classifier.
+        </p>
+
+        <p class="knowledge_p">
+            Precision is best used when it is important to not have false positive values, such as if a job could be
+            lost due to the outcome of the model, in this instance we'd want to limit the number of positive predictions
+            that were incorrect.
+        </p>
+
+        <p class="knowledge_p">
+            Recall, on the other hand, is useful when it is more important to classify all the positive labels than it
+            is to incur a few false positives, such as detecting fraudulent bank transactions.
+        </p>
+
+        <p>
+            We have just outlined how, in different situations, precision or recall can be the more important metric.
+            However, in an endeavour to provide a single metric to define the performance of a classifier, the F1 metric
+            was created which is the harmonic average of the precision and recall and is defined as:
+        </p>
+
+        <p class="knowledge_eq"> $in F1 = 2\frac{precision * recall}{precision + recall} $in</p>
+
+        <p class="knowledge_p">
+            Another problem that you may have noticed with precision, recall, and the F1 score is that if you swap the
+            positive and negative labels when you have imbalanced datasets then the classifier will have different
+            recall, precision, and F1 scores. A possible way to avoid this is to always use make sure that the minority
+            class is the positive label. Proposed alternatives have also included taking into account all sectors of the
+            confusion matrix such as using a P4 score which uses the precision and recall as well as the specificity and
+            negative prediction value (NPV) metrics also:
+        </p>
+
+        <p class="knowledge_eq">
+            $in specificity = \frac{tn}{tn+fp} $in <br>
+            $in NPV = \frac{tn}{tn+fn} $in <br>
+            $in P4 = \frac{4}{\frac{1}{precision} + \frac{1}{recall} + \frac{1}{specificity} + \frac{1}{NPV}} =
+            \frac{4}{}$in
+        </p>
+
+        <p class="knowledge_p">
+            Another parameter which can affect the precision and recall values is the threshold used to classify the
+            class labels. If the threshold, a value between 0 and 1, is set to 1 then every value is classified as the
+            negative class, and if the threshold is set to 0 then every example is classified as the positive class. To
+            understand how the threshold affects the performance of the model, the recall is plotted against the false
+            positive rate (equal to 1-specificity). This plot is called the receiver operating characteristic curve. The
+            ideal ROC curve for a perfect classifier would be a single point of recall 1 and false positive rate
+            (1-specificity) of 0. A random guess of the classification, at least for a very large number of samples and
+            in a balanced dataset, would approach a y=x line in this plot
+        </p>
+
+        <img class="knowledge_img" src="../../resources/myImgs/ds/roc_curve.png" ,
+            alt_text="Plot of a receiver operating characteristic curve">
+
+        <p class="knowledge_p">
+            We noted that the perfect classifier would have a false positive rate (FPR) of 0 and a recall of 1 but this
+            is for any reasonable threshold used in the classification. The ROC curve will also plot any unreasonable
+            classification thresholds as well, such as positive and negative infinity. For these extremes threshold
+            values either non or all of the values will be classified positive respectively. This means that our perfect
+            model would also plot at (0,0) and (1,1) on the ROC plot as well. This would give an area under this curve
+            of 1. A random guess at the classification, under the assumption of a balanced dataset, would be 0.5. So,
+            although the curve itself only gives a visual cue of the performance of the model for various thresholds, we
+            can use this plot to define a metric to quantitatively describe the performance of our classifier by
+            measuring the area under the curve. This is known as the ROC AUC, or simply AUC, where AUC stands for "area
+            under curve". The closer the value to 1, the better the performance fo the classifier.
         </p>
 
     </div>
