@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8">
+    <!-- Plotly.js -->
+    <!-- the local version requires the use of Plotly.newPlot -->
+    <script src="../../scripts/plotly-2.18.2.min.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+    <script src="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script> -->
+    <!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/queries.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="../../index.html">Home</a></li>
+                <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="../../about.html">About</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">A basic random forest classification example</h1>
+
+        <p class="knowledge_p">In this section there is a brief example of solving a classification task using a random
+            forest. We'll load the titanic survivor data from (<a
+                href="https://openml.org/search?type=data&sort=runs&status=active">openml</a>) to attempt to predict
+            whether the passenger survived or not based on the data available. This is a basic example to show how to
+            use a RandomForest model using tensorflow-decision-forests so we won't go deep into the details or apply
+            much pre-processing. If you want to know about decision trees then you can see the relevant topic <a
+                href="intro_to_decision_trees.html">here</a></p>
+
+        <p class="knowledge_p">
+            This is a basic workflow to load, setup, and evaluate a random forest classifier. The steps involved are:
+        <ol>
+            <li>Data input and test/train split creation</li>
+            <li>Instantiate a RandomForest model</li>
+            <li>Train the model</li>
+            <li>Evaluate the model on the test dataset</li>
+        </ol>
+        </p>
+
+        <h2 class="knowledge_h2">First, import the necessary libraries</h2>
+
+        <pre><code class="language-python">import tensorflow_decision_forests as tfdf
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import fetch_openml</code></pre>
+
+        <h2 class="knowledge_h2">Data input and test/train split creation</h2>
+        <p class="knowledge_p">
+            We'll load a toy dataset using the <i class="i_code">openml</i> connector in sci-kit learn which has various
+            datasets available.
+            We'll use the titanic survivor dataset which has 14 features and 1309 samples. Note that some features have
+            null values for some samples but for the sake of simplicity we'll just drop those rows. More
+            information can be found <a href="https://openml.org/search?type=data&status=any&id=40945">here</a>. We'll
+            also use the train_test_split function from sci-kit learn to make our train and test datasets.
+        </p>
+
+        <pre><code class="language-python"># load the dataset from tensorflow datasets
+df = fetch_openml(data_id=40945)
+df = df.frame
+
+# cast the survived column to an int and drop any row with null values
+df['survived'] = df['survived'].astype(int)
+df = df.dropna(axis=1, how='any')
+
+# split the data into a train and test set
+train_df, test_df = train_test_split(df, test_size=0.2)</code></pre>
+
+        <p class="knowledge_p">
+            Here we have split the data into train and test datasets using the <i class="i_code">train_test_split</i>
+            function from sklearn.model_selection. We also use a fixed random state so that the training and test splits
+            are consistent when we re-run the script
+        </p>
+
+        <h2 class="knowledge_h2">Instantiate a RandomForest Model and train</h2>
+
+        <p class="knowledge_p">
+            Tensorflow-decision-forests have a number of prebuilt models that can be easily instantiated. Here, we use a
+            <i class="i_code">RandomForestModel</i> solution. We will be training a Random Forest model which will
+            attempt to map the input data to the target labels, we'll leave the details of how it does this to the
+            relevant page <a href="intro_to_decision_trees.html">here</a>. We'll set the number of tress of 50 as the
+            default of 300 is quite large for the simple dataset we are using here. Similarly the default depth of 16 is
+            also rather quite deep for this simple problem, so we'll limit that to 1 less than the number of features.
+        </p>
+
+        <pre><code class="language-python">model = tfdf.keras.RandomForestModel(verbose=2, num_trees=50, max_depth=(len(df.columns)-1))
+model.fit(train_ds)</code></pre>
+
+        <h2 class="knowledge_h2">Evaluate the model on the test dataset</h2>
+
+        <p class="knowledge_p">
+            We'll evaluate the model on the test dataset and retrieve the true/false positive/negative values to form a
+            confusion matrix (although we'll just print the values to the screen).
+        </p>
+
+        <pre><code class="language-python">model.compile(metrics=["accuracy","TruePositives","TrueNegatives","FalsePositives","FalseNegatives"])
+evaluation = model.evaluate(test_ds, return_dict=True)
+
+for k, v in evaluation.items():
+  print(f'{k}: {v}')</code></pre>
+
+        <pre><p class="knowledge_pyprint">loss: 0.0
+accuracy: 0.7709923386573792
+true_positives: 52.0
+true_negatives: 150.0
+false_positives: 12.0
+false_negatives: 48.0</p></pre>
+
+        <h2 class="knowledge_h2">Summary</h2>
+        <p class="knowledge_p">
+            In this topic we've gone through a simple example of building a Random Forest classifier. Next, have a look
+            at the details behind how decision trees and random forests work:
+        </p>
+
+        <a class="next-page" href="intro_to_decision_trees.html">Introduction to Decision Trees</a>
+
+        <div class="license">
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+                    alt="Creative Commons License" style="border-width:0"
+                    src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+            work is
+            licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+                Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+        </div>
+
+</body>
+
+<!-- use this to run the code syntax highlighting in highlight.js -->
+<!-- <script>hljs.highlightAll();</script> -->
+<!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+<script src="../../scripts/prism.js"></script>
+
+</html>
