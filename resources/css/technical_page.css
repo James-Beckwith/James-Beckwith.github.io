@@ -8,6 +8,29 @@ body {
   background-color: #595554;
 }
 
+.accordion {
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+  width: 90%;
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* flex: 50%; */
+  gap: 24px;
+}
+
+.accordion a {
+  color: black;
+}
+
+.accordion a:hover,
+a:active {
+  /* color:  RGBA(35,76,133,1); */
+  color: RGBA(90, 166, 225, 1);
+  border-bottom: 1px solid transparent;
+}
+
 /* RGBA(90,166,225,1)	  datajab blue light */
 /* RGBA(35,76,133,1)  datajab blue dark */
 /* RGBA(62,62,64,1) chalky gray */

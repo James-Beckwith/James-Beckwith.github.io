@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8">
+    <script src="../../scripts/plotly-2.18.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/queries.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="../../index.html">Home</a></li>
+                <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="../../about.html">About</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">PAGE UNDER CONSTRUCTION</h1>
+
+        <h1 class="knowledge_h1">Encoding for categorical variables</h1>
+
+        <h2 class="knowledge_h2">Why do we need to encode variables?</h2>
+
+        <p class="knowledge_p">
+            It is common to have a dataset that consists of some categorical variables. For example, a lot of data is
+            captured about people and may contain fields such as "sex", "nationality", or "employment status". Location
+            data may have a "country" field but datasets can also have context specific categorical variables too such
+            as the "embarked" and "survived" features in the popular <a
+                href="https://www.tensorflow.org/datasets/catalog/titanic">titanic dataset</a>.
+        </p>
+
+        <p class="knowledge_p">
+            Most machine learning techniques requires numeric input features so categorical and text features need to be
+            transformed prior to their use in these models.
+        </p>
+
+        <h2 class="knowledge_h2">Ordinal Encoding</h2>
+
+        <p class="knowledge_p">
+            You may be thinking, my data is already numerical because each category has just been assigned a unique
+            integer. Fantastic, so long as those numbers are normalized, or at least not too large, then you can use
+            them and this is in fact the first encoding technique we'll be looking at; Ordinal Encoding.
+        </p>
+
+        <p class="knowledge_p">
+            Ordinal encoding, sometimes called integer encoding, is a method for converting categorical variables by
+            assigning each new unique category entry the next largest integer number. For example, the feature ['cat',
+            'dog', 'rabbit', 'cat'] could be encoded to [0, 1, 2, 0]. This is simple and uses the least resources to
+            create and store the feature as each category is stored as an integer value. Missing, unknown, or unseen
+            values can also be stored in an unused integer, typically -1. However, this approach also adds structure to
+            the categorical values that may be counter productive. In our previous example, the encoding would imply
+            that a 'rabbit' is twice as far from a 'cat' than a 'dog' and a 'dog' is as far from a 'cat' as it is a
+            'rabbit'. This imparted structure can cause issues, especially if the model being used assumes that these
+            numbers are continuous or that the magnitude is important.
+        </p>
+
+    </div>
+
+
+    <div class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+        work is
+        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    </div>
+</body>
+
+<script src="../../scripts/prism.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="../../scripts/nav.js"></script>
+
+</html>
