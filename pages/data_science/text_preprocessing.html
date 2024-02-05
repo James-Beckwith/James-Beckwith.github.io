@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8">
+    <script src="../../scripts/plotly-2.18.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/queries.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="../../index.html">Home</a></li>
+                <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="../../about.html">About</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">PAGE UNDER CONSTRUCTION</h1>
+
+        <h1 class="knowledge_h1">Preprocessing of textual data</h1>
+
+        <p class="knowledge_p">A lot of captured data exists in the form of text. Social media posts, reviews, books, captions, transcripts, news articles, completed forms etc are all examples of text heavy data that contain information that could be of use. For example, if we want to develop a sentiment analysis program that will determine if a review is positive or negative then we will need to process a lot of text based reviews. Another example of utilizing text in machine learning solutions is the automatic generation of captions for images. Hopefully these example can convince you of the utility of text data in your machine learning solutions.</p>
+        
+        <p class="knowledge_p">Text data is useful for machine learning solutions but also comes with some unique issues. Language is complicated, and so is the text which represents it. We have different tenses of verbs, words which can mean various different things depending on the context and many ways of saying the same thing. On top of this, most machine learning models expect numerical inputs and not a string. We therefore need to pre-process our input data to make learning easier for machine learning models. One thing that we will ignore in this discussion is textual data which represents categorical variables, such as a country names, as categorical data is better dealt with in other ways, see the <a href="encoding.html">encoding</a> section for example.</a></p>
+
+        <p class="knowledge_p">There are a number of packages in python built for text pre-processing such as spacy and NLTK. Another key package is the inbuilt re package which is used to implement regular expressions in python, which are essentially a language unto themselves. We won't cover regular expressions here but they are very useful and useful websites exist to test out your regular expressions such as <a href="https://regex101.com/">regex101</a>.</p>
+
+        <h2 class="knowledge_h2">Lemmatization</h2>
+        <p class="knowledge_p"> Lemmatization is the process of grouping together different forms of a word into a common term. For example, learn, learning, learns, learned, learnt could all be reduced to "learn".  For example, using the spacy package:
+        </p>
+
+        <pre><code class="language-python">import spacy
+nlp = spacy.load("en_core_web_sm")
+lemmatizer = nlp.get_pipe("lemmatizer")
+doc = nlp("study studying studies studied")
+print([token.lemma_ for token in doc])</code></pre>
+
+        <pre><p class="knowledge_pyprint">['study', 'study', 'study', 'study']</p></pre>
+        
+        <h2 class="knowledge_h2">Stemming</h2>
+        <p class="knowledge_p"> Stemming is when we lemmatize but instead of reducing to a common term we remove all the potentially variable endings. An example of stemming would be reducing the list of study, studying, studies, studied to "studi". For example, using the PorterStemmer from the NLTK package:
+        </p>
+
+        <pre><code class="language-python">from nltk.stem import PorterStemmer
+nltk.download("punkt")
+ps = PorterStemmer()
+print(ps.stem('studying'))
+print(ps.stem('studies'))
+print(ps.stem('study'))
+print(ps.stem('studied'))</code></pre>
+
+        <pre><p class="knowledge_pyprint">studi
+studi
+studi
+studi</p></pre>
+
+        <p class="knowledge_p">Most stemmers, such as the Porter stemmer used above are rule based and prone to both over- and under-processing text. For instance, if instead of using study for our example we use buy then the equivalent output would be:</p>
+
+        <pre><code class="language-python">from nltk.stem import PorterStemmer
+nltk.download("punkt")
+ps = PorterStemmer()
+print(ps.stem('buying'))
+print(ps.stem('buys'))
+print(ps.stem('buy'))
+print(ps.stem('bought'))</code></pre>
+        
+        <pre><p class="knowledge_pyprint">buy
+buy
+buy
+bought</p></pre>
+        
+        <p class="knowledge_p">Here, the irregularity of the verb in the past tense means that it isn't stemmed back to the common "buy".</p>
+
+        <h2 class="knowledge_h2">Removal of stop words</h2>
+        <p class="knowledge_p">Stop words are words so common that they carry little information for natural language purposes such as "the", "and", "or", "for" etc. Removing these words allows the system to focus on the more information rich part of a sentence rather than terms that are more common but hold no contextual information.</p>
+        
+        <h2 class="knowledge_h2">Tokenization</h2> 
+        <p class="knowledge_p">Tokenization is the process of breaking a string into smaller, hopefully meaningful, parts. A standard approach is to split on white spaces and punctuation. An NLTK example is:</p>
+        
+        <pre><code class="language-python">from nltk.tokenize import word_tokenize
+tokenized_words=word_tokenize("This is an example sentence. This is the second sentence. Hello Mr. Bond.")
+print(tokenized_words)</code></pre>
+        
+        <pre><p class="knowledge_pyprint">['This', 'is', 'an', 'example', 'sentence', '.', 'This', 'is', 'the', 'second', 'sentence', '.', 'Hello', 'Mr', '.', 'Bond', '.']</p></pre>
+        
+        <p class="knowledge_p">
+        Of course, you can amend this tokenization process to split on different characters. You can tokenize your string on sentences an other structures too with the correct configurations. An example of a sentence tokenizer using the spacy package is:
+        </p>
+
+        <pre><code class="language-python">from spacy.lang.en import English
+nlp = spacy.load("en_core_web_sm")
+nlp.add_pipe('sentencizer')
+doc = nlp("This is an example sentence. This is the second sentence. Hello Mr. Bond.")
+for sent in doc.sents:
+    print(sent)</code></pre>
+         
+    <pre><p class="knowledge_pyprint">This is an example sentence.
+This is the second sentence.
+Hello Mr. Bond.</p></pre>
+        
+        <p class="knowledge_p">
+        You can see here that only 3 sentences have been identified even though there is a full stop character in "Mr. Bond". This is because the tokenizer recognizes certain utilizations of full stops such as in names and abbreviations for countries, like U.K.        
+        </p>
+
+    </div>
+
+
+    <div class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+        work is
+        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+            Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    </div>
+</body>
+
+<script src="../../scripts/prism.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="../../scripts/nav.js"></script>
+
+</html>

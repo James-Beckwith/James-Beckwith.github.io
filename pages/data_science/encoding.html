@@ -67,13 +67,40 @@
         <p class="knowledge_p">
             Ordinal encoding, sometimes called integer encoding, is a method for converting categorical variables by
             assigning each new unique category entry the next largest integer number. For example, the feature ['cat',
-            'dog', 'rabbit', 'cat'] could be encoded to [0, 1, 2, 0]. This is simple and uses the least resources to
-            create and store the feature as each category is stored as an integer value. Missing, unknown, or unseen
-            values can also be stored in an unused integer, typically -1. However, this approach also adds structure to
-            the categorical values that may be counter productive. In our previous example, the encoding would imply
-            that a 'rabbit' is twice as far from a 'cat' than a 'dog' and a 'dog' is as far from a 'cat' as it is a
-            'rabbit'. This imparted structure can cause issues, especially if the model being used assumes that these
-            numbers are continuous or that the magnitude is important.
+            'dog', 'rabbit', 'cat'] could be encoded to [0, 1, 2, 0]. This is simple and uses the least amount of
+            resources to create and store the feature as each category is stored as an integer value. Missing, unknown,
+            or unseen values can also be stored in an unused integer, typically -1. However, this approach also adds
+            structure to the categorical values that may be counter productive. In our previous example, the encoding
+            would imply that a 'rabbit' is twice as far from a 'cat' than a 'dog' and a 'dog' is as far from a 'cat' as
+            it is a 'rabbit'. This imparted structure can cause issues, especially if the model being used assumes that
+            these numbers are continuous or that the magnitude is important.
+        </p>
+
+        <h2 class="knowledge_h2">One-hot encoding</h2>
+
+        <p class="knowledge_p">
+            An alternative to integer encoding is to use one-hot encoding which creates a new binary feature for each
+            unique value in the categorical feature resulting in N features where N is the number of unique entries in
+            the categorical variable. For our example feature of ['cat', 'dog', 'rabbit', 'cat'] would become the
+            following 3 features [[1,0,0,1], [0,1,0,0], [0,0,1,0]]. Here, the first feature would correspond to
+            something like "is the original feature 'cat', yes or no?" and similarly for the other two features.
+        </p>
+
+        <p class="knowledge_p">
+            One can clearly see that as the number of unique categories increases then the number of features needed to
+            represent them grows too. This can lead to having large numbers of features which in turn can have
+            detrimental impacts on the performance and explainability of your model. There is also no information
+            retained between different categories, for instance there would be no more correlation between 'cat' and
+            'lion' as there would be between 'cat' and 'spanner'. As each is now just a binary feature. There may be a
+            correlation that exists when taking into account the target variable, i.e. the "is cat" feature and "is
+            lion" feature may correlate to the same labels more often then the "is cat" feature correlates with teh "is
+            spanner" feature.s
+        </p>
+
+        <p class="knowledge_p">
+            If correlation between features is important then other encodings exist such as transformations based on
+            other information. For instance, target encoding uses a combination of the target average value for the
+            particular categorical mean and the average of all target values to encode the categorical variables.
         </p>
 
     </div>
