@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+    <body>
+
+<p>Click on the "Choose File" button to upload a file:</p>
+
+<input type="file"  accept="application/pdf" id="myFile" name="filename">
+<input type="submit">
+
+<p id="text1"></p>
+
+</body>
+
+<script>var exports = [];</script>
+<script src="../../scripts/flesch-kincaid.js"></script>
+<script>
+    var FleschKincaid = exports;
+</script>
+<script type="module" src="../../scripts/upload.js"></script>
+
+</html>
