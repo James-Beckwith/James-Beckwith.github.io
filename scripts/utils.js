@@ -1,3 +1,68 @@
+export function clearTable(tableid) {
+    var table = document.getElementById(tableid);
+    var rowCount = table.rows.length;
+    for (var i = 1; i < rowCount; i++) {
+        table.deleteRow(1);
+    }
+}
+
+export function tableCreate(tableid, dataDict, csvString) {
+    // get table element
+    const tbl = document.getElementById(tableid)
+    
+    // clear table
+    tbl.innerHTML = ''
+
+    // add headers to CSV string
+    csvString = Object.keys(dataDict).join(',') + '\n'
+
+    const theadr = tbl.insertRow();
+
+    for (const key in dataDict){
+        const this_cell = theadr.insertCell();
+        this_cell.outerHTML = '<th>' + key + '</th>';
+    }
+    for (let i = 0; i < dataDict[Object.keys(dataDict)[0]].length; i++) {
+        const tr = tbl.insertRow();
+        for (const key in dataDict) {
+            const td = tr.insertCell();
+            var cell_out = dataDict[key][i];
+            if (typeof(cell_out)==='number'){
+                cell_out = cell_out.toFixed(2);
+            }
+            // td.appendChild(document.createTextNode(cell_out));
+            td.innerHTML = cell_out
+            csvString += ',' + cell_out;
+      }
+      csvString += '\n';
+    }
+    return csvString
+  }
+
+export function downloadCSVFile(csv_data, filename) {
+    // Modified from: https://www.geeksforgeeks.org/how-to-export-html-table-to-csv-using-javascript/
+    // Create CSV file object and feed our
+    // csv_data into it
+    const CSVFile = new Blob([csv_data], { type: "text/csv" });
+
+    // Create to temporary link to initiate
+    // download process
+    let temp_link = document.createElement('a');
+
+    // Download csv file
+    temp_link.download = filename;
+    let url = window.URL.createObjectURL(CSVFile);
+    temp_link.href = url;
+
+    // This link should not be displayed
+    temp_link.style.display = "none";
+    document.body.appendChild(temp_link);
+
+    // Automatically click the link to trigger download 
+    temp_link.click();
+    document.body.removeChild(temp_link);
+}
+  
 export function makeArr(startValue, stopValue, cardinality) {
   var arr = [];
   var step = (stopValue - startValue) / (cardinality - 1)

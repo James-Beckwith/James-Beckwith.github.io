@@ -1,3 +1,9 @@
+import { tableCreate, downloadCSVFile, clearTable } from "./utils.js"
+
+// create a variable to store the CSV data
+var csvString = ''
+var dataDict = {}
+
 function processTextContent(textContent) {
     var count = 0;
     var totalFont = 0;
@@ -16,7 +22,6 @@ function processTextContent(textContent) {
     return [text, totalFont/count]
   }
   
-
 // Function to extract text from PDF using PDF.js
 async function extractTextFromPDF(file) {
     const pdf = await pdfjsLib.getDocument(URL.createObjectURL(file)).promise;
@@ -27,14 +32,24 @@ async function extractTextFromPDF(file) {
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
-        // const pageText = textContent.items.map(item => item.str).join(' ');
         const [pageText, fontSize] = processTextContent(textContent);
         AvgFontSize += fontSize;
         count++;
         extractedText += `${pageText} `;
     }
 
-    return [extractedText, pdf.numPages, AvgFontSize/count];
+    // get Flesch score
+    const fleschScore = FleschKincaid.rate(extractedText);
+
+    // add current analytics to data dictionary
+    let output = {'Number of Pages':pdf.numPages, 'Average Font Size': AvgFontSize/count, 'Flesch Score':fleschScore};
+    for (const item in output) {
+        if (item in dataDict) {
+            dataDict[item].push(output[item])
+        } else {
+            dataDict[item] = [output[item]]
+        }
+    }
 }
 
 document.getElementById('myFile').addEventListener('change', async function(event) {
@@ -46,17 +61,33 @@ document.getElementById('myFile').addEventListener('change', async function(even
     // get number of files to process
     var N = document.getElementById('myFile').files.length
 
+    // loop through all files
     for (let i = 0; i<N; i++){
         const pdfFile = document.getElementById('myFile').files[i];
 
         if (pdfFile) {
-            const [text, numPages, FontSize] = await extractTextFromPDF(pdfFile);
-            const fleschScore = FleschKincaid.rate(text);
-            document.getElementById('text1').innerHTML += `Flesch Reading Ease score: ${fleschScore.toFixed(2)}, npages: ${numPages}, average font size: ${FontSize.toFixed(2)}<br>`;
+            // add file to data dictionary
+            if ('File' in dataDict) {
+                dataDict['File'].push(pdfFile.name)
+            } else {
+                dataDict['File'] = [pdfFile.name]
+            }
+            // extract and process text
+            await extractTextFromPDF(pdfFile);
         } else {
             document.getElementById('text1').innerHTML += 'Please upload a valid PDF file.<br>';
         }
     }
+    // create table
+    csvString = tableCreate('table1', dataDict, csvString)
 });
 
+document.getElementById('download1').addEventListener('click', async function(event) {
+    downloadCSVFile(csvString, 'temp.csv')
+});
 
+document.getElementById('clear1').addEventListener('click', async function(event) {
+    csvString = ''
+    dataDict = {}
+    clearTable('table1')
+});
