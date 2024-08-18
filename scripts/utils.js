@@ -30,10 +30,12 @@ export function tableCreate(tableid, dataDict, csvString) {
             if (typeof(cell_out)==='number'){
                 cell_out = cell_out.toFixed(2);
             }
-            // td.appendChild(document.createTextNode(cell_out));
             td.innerHTML = cell_out
-            csvString += ',' + cell_out;
+            csvString += cell_out + ',';
       }
+      // remove last comma
+      csvString = csvString.substring(0, csvString.length - 1);
+
       csvString += '\n';
     }
     return csvString
