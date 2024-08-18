@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- following line is needed so that plotly can display negative numbers in plots correctly -->
+    <meta charset="utf-8">
+    <!-- Plotly.js -->
+    <!-- the local version requires the use of Plotly.newPlot -->
+    <script src="../../scripts/plotly-2.18.2.min.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+    <script src="http://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script> -->
+    <!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/style2.css">
+    <link rel="stylesheet" type="text/css" href="../../vendors/css/prism.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/technical_page.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/css/queries.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$in', '$in'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="row">
+            <!-- ul is an unordered list which should contain li list elements -->
+            <ul class="main-nav js--main-nav">
+                <li><a href="../../index.html">Home</a></li>
+                <!-- TODO maybe thinking about changing Home to a home icon instead?-->
+                <li><a herf="../../about.html">About</a></li>
+                <li><a herf="#">Education</a></li>
+                <li><a herf="#">Resources</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <h1 class="knowledge_h1">Linear regression</h1>
+
+        <p class="knowledge_p">Linear regression is a method that is known by many names, but to put it in it's simplest
+            form; it's fitting a plane to some data points. In 2 dimensions this would be a straight line, in 3
+            dimensions this would be a flat plane, like a sheet of paper. If you have 2 points and draw a straight line
+            between them; congratulations, you have just done a linear regression in your head. Of course, not all data
+            is so simple, generally there isn't an easily identifiable straight line that passes through all your data,
+            and the number of dimensions of the input data mean that unless you have 1 input feature, you'll likely be
+            fitting a multi-dimensional plane to your data rather a line (which is just a line in more dimensions
+            anyway).
+        </p>
+        <p class="knowledge_p">
+            There are many ways to formulate and solve a linear regression example. You may have already come across the
+            trend lines you can fit in Excel or other packages, which are an example of linear regression. I would
+            recommend that you first check out the inverse theory section which covers the mathematical background of
+            linear regression. Even though the terminology is framed from an inverse theory perspective, the foundations
+            provided as just as relevant in data science. The most relevant section is <a
+                href="../inverse_theory/inverse_force_to_linear.html"> available here</a>.
+        </p>
+
+        <p class="knowledge_p">
+            In this section, we'll cover what linear regression means from a data science point of view. A point of
+            note, although we have mentioned linear regression, polynomial regression or fitting of any other type of
+            curve, such as a exponential or logarithm, is typically dealt with in data science via feature engineering.
+            So, if you want to fit a second order polynomial (a quadratic function) to some data, then instead of
+            passing in just the input features, you pass in the input features and the square of the input features as
+            well. This is equivalent to when we form the data kernel in the inverse theory approach.
+        </p>
+
+        <p class="knowledge_p">
+            There is an example of linear regression in the introductory section of basic data science solutions in
+            python <a href="basic_nn_linear_regression.html">here</a> that uses the tensorflow package to fit a single
+            layer neural network with 10 neurons to the toy diabetes dataset from sci-kit learn. If you want an overview
+            of what a neuron is in a neural network then see the neural networks building block page <a
+                href="intro_to_nn.html">here</a>.
+        </p>
+        <p>
+            In this topic we'll go through:
+        <ol>
+            <li><a href="#linear_regression_intro">The basic steps of implementing linear regression</a> in to solve a
+                data science problem, such as that given in introductory section of basic data science solutions in
+                python (<a href="basic_nn_linear_regression.html">here</a>).</li>
+            <li><a href="#linear_regression_feature_engineering">An example of using basic feature engineering</a> to
+                solve a problem that looks anything but linear</li>
+            <li>Metrics that can be used to assess how well our linear regression models fit our data.</li>
+        </ol>
+        </p>
+
+        <h2 class="knowledge_h2" , id="linear_regression_intro">Linear regression - the basics</h2>
+
+        <p class="knowledge_p">
+            As has already been mentioned, the mathematics behind linear regression are covered in the inverse theory
+            section <a href="../inverse_theory/linear_least_squares.html">here</a>. Although more computationally
+            efficient algorithms than inverting a large matrix are typically employed. For brevity we'll recap the topic
+            here.
+        </p>
+
+        <p class="knowledge_p">
+            When thinking of linear regression, it's easiest to start with thinking about fitting a straight line. The
+            equation of a straight line is, in 2 dimensions:
+        </p>
+
+        <p class="knowledge_eq">
+            $$ y = mx +c $$
+        </p>
+
+        <p class="knowledge_p">
+            Here, x is our input feature, we only have 1 in this example and y is our target variable. m and c are the
+            gradient and intercept of the straight line respectively and represent our model parameters to be fit.
+        </p>
+
+        <p class="knowledge_p">
+            If we had another input variable, we'll call it "z", then the equation can be extended to 3 dimensions
+            rather easily:
+        </p>
+
+        <p class="knowledge_eq">
+            $$ y = kz + mx +c $$
+        </p>
+
+        <p class="knowledge_p">
+            Now we have the extra input feature, z, and it's associated gradient, denoted "k" here. However, for a large
+            number of input features this equation would become rather cumbersome, so instead we amalgamate all the
+            model variables into a vector, m, and the input features into a matrix, G. If we denote our target feature
+            as the variable "d", then we arrive at the equation given in the inverse theory literature.
+        </p>
+
+        <p class="knowledge_eq">
+            $$ d = Gm $$
+        </p>
+
+        <p class="knowledge_p">
+            The solution of which is given in the inverse theory section. But what is important from a data science
+            perspective is the understanding that the forward operator, G, contains all the input features we wish to
+            use to model our input features to our target variable. Some packages, such as statsmodels will require that
+            you specifically account for an intercept by adding a constant input feature, where as others such as
+            sci-kit learns linearRegression will fit a constant by default (although you can turn this option off if
+            required).
+        </p>
+
+        <p class="knowledge_p">
+            We need to make sure that any input feature we want to use to regress against the target variable is
+            included in the input feature set presented to the regression algorithm.
+        </p>
+
+        <p>
+            It's important to note that in data science there are many different names for linear regression which
+            typically vary only in the type of regularization applied to the model variables to be fit. For example, an
+            L2 penalty on the size of the model variables, what would be called Tikhonov regularization in inverse
+            theory, is referred to as Ridge regression. Similarly, a model which applies an L1 penalty on the model is
+            referred to as LASSO and ElasticNet models apply both of those regularization techniques. Regularization is
+            an important part of any fitting algorithm as not all data is recorded equal and typically we have some idea
+            of what defines a good model so the choice of algorithm (or regularization) should be thought about
+            carefully.
+        </p>
+
+        <p class="knowledge_p">
+            Let's have a look at how to apply feature engineering with a practical example
+        </p>
+
+        <h2 class="knowledge_h2" , id="linear_regression_feature_engineering">Feature engineering for a more powerful
+            linear regression</h2>
+
+        <h2 class="knowledge_h2" , id="linear_regression_metrics">How good is our model? - Goodness of fit</h2>
+
+        <a class="next-page" href="intro_to_logistic_regression.html">Logistic regression</a>
+
+        <div class="license">
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+                    alt="Creative Commons License" style="border-width:0"
+                    src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />This
+            work is
+            licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+                Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+        </div>
+
+</body>
+
+<!-- use this to run the code syntax highlighting in highlight.js -->
+<!-- <script>hljs.highlightAll();</script> -->
+<!-- use prism JS instead, looks nicer, especially the tomorrow dark theme -->
+<script src="../../scripts/prism.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="../../scripts/nav.js"></script>
+
+</html>
