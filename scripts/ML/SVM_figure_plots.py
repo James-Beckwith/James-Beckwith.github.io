@@ -35,9 +35,10 @@ fig = plt.figure()
 ax = fig.add_subplot(111,projection='3d')
 # ax.view_init(elev=19, azim=-23, roll=0)
 ax.view_init(elev=23, azim=-52, roll=0)
-surf = ax.plot_surface(x, y, slopePlaneHighNeg, linewidth=0, antialiased=False, alpha=0.2)
+# surf = ax.plot_surface(x, y, slopePlaneHighNeg, linewidth=0, antialiased=False, alpha=0.2)
 ax.plot_surface(x, y, slopePlaneHighPos, linewidth=0, antialiased=False, alpha=0.2)
-ax.plot_surface(x, y, flat, linewidth=0, antialiased=False, alpha=0.2)
+# ax.plot_surface(x, y, flat, linewidth=0, antialiased=False, alpha=0.2)
+ax.scatter(vals[0],vals[1], vals[2], marker='^')
 
 # overplot the intersection of the planes with the zero plane
 plot_x, plot_y = get2dPlot(axs, Sxhigh, Syhigh, bias)

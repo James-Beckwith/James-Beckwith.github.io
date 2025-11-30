@@ -148,25 +148,28 @@
             included in the input feature set presented to the regression algorithm.
         </p>
 
-        <p>
-            It's important to note that in data science there are many different names for linear regression which
-            typically vary only in the type of regularization applied to the model variables to be fit. For example, an
-            L2 penalty on the size of the model variables, what would be called Tikhonov regularization in inverse
-            theory, is referred to as Ridge regression. Similarly, a model which applies an L1 penalty on the model is
-            referred to as LASSO and ElasticNet models apply both of those regularization techniques. Regularization is
-            an important part of any fitting algorithm as not all data is recorded equal and typically we have some idea
-            of what defines a good model so the choice of algorithm (or regularization) should be thought about
-            carefully.
-        </p>
-
+        <h2 class="knowledge_h2">Everybody speaks a different language</h2>
         <p class="knowledge_p">
-            Let's have a look at how to apply feature engineering with a practical example
+            It's important to note that in data science there are many different names for linear regression which, if
+            they vary at all, typically vary only in the type of regularization applied to the model variables to be
+            fit.
         </p>
-
-        <h2 class="knowledge_h2" , id="linear_regression_feature_engineering">Feature engineering for a more powerful
-            linear regression</h2>
+        <p class="knowledge_p">
+            For example, an L2-norm penalty on the size of the model variables, what would be called Tikhonov
+            regularization in inverse theory, is referred to as Ridge regression in many data science packages.
+            Similarly, a model which applies an L1-norm penalty on the model is referred to as LASSO. If the model uses
+            both L1- and L2-norms then it may be referred to as an ElasticNet model. Regularization is an important part
+            of any fitting algorithm as not all data is recorded equal and typically we have some idea of what defines a
+            good model so the choice of algorithm (or regularization) should be thought about carefully.
+        </p>
 
         <h2 class="knowledge_h2" , id="linear_regression_metrics">How good is our model? - Goodness of fit</h2>
+        <p class="knowledge_p">
+            To see how good your model is fit to the data then you can use any number of metrics for regression as
+            defined in the page specifically about metrics <a href="metrics.html">here</a>.
+        </p>
+
+
 
         <a class="next-page" href="intro_to_logistic_regression.html">Logistic regression</a>
 

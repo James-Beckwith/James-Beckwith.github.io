@@ -1,3 +1,4 @@
+import { stitchLines } from "./nlp_utils.js";
 import { tableCreate, downloadCSVFile, clearTable } from "./utils.js"
 
 // create a variable to store the CSV data
@@ -5,12 +6,14 @@ var csvString = ''
 var dataDict = {}
 
 function processTextContent(textContent) {
+    // function to extract text and calculate average font size over all lines of text
     var count = 0;
     var totalFont = 0;
-    var text = '';
+    var lines = [];
     textContent.items.forEach(item => {
         // extract text
-        text += item.str + ' ';
+        // text += item.str + ' ';
+        lines.push(item.str)
 
         // The transform property provides the matrix for scaling and transforming the text
         const transform = item.transform;
@@ -19,6 +22,11 @@ function processTextContent(textContent) {
         totalFont += Math.sqrt(transform[0] ** 2 + transform[1] ** 2);
         count++;
     });
+
+    //!TODO - stop and think; do we need to do this if each line doesn't contain a new line character? 
+    // stitch together text into sentences  
+    text = stitchLines(lines)
+
     return [text, totalFont/count]
   }
   

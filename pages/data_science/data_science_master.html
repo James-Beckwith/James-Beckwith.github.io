@@ -84,14 +84,15 @@
                 <div class="number">
                     02
                 </div>
-                Useful and foundational concepts
+                Training concepts
             </summary>
-            The aim of this section is to provide some basic background into important foundational concepts that will
-            be encountered in almost any data science solution.<br><br>
+            The aim of this section is to provide background in important concepts that are encountered when training
+            most, but not all, machine learning algorithms.<br><br>
             <ol>
                 <li><a href="metrics.html">Loss and accuracy</a></li>
                 <li><a href="optimizers.html">Optimization algorithms</a></li>
                 <li><a href="validation.html">Dataset splitting and validation of supervised models</a></li>
+                <li><a href="hyperparameter_optimization.html">Hyper-parameter optimization</a></li>
             </ol>
         </details>
 
@@ -119,13 +120,14 @@
                 <div class="number">
                     04
                 </div>
-                Common supervised data science methods
+                Classification methods
             </summary>
-            In this section we'll go through some common data science techniques for modelling data, either for
-            regression or classification purposes. Unsupervised learnings and neural networks are large enough topics to
-            be covered in their own sections.<br><br>
+            In this section we'll go through some common data science techniques for modelling data which has one or
+            multiple target categories/classes/labels associated with each entry. A very popular approach to solving
+            these kinds of problems is to use neural networks. However, neural networks are such a broad and important
+            field that they deserve their own section, see further down the page. <br><br>
             <ol>
-                <li><a href="intro_to_linear_regression.html">Linear, logistic, and polynomial regression</a></li>
+                <li><a href="intro_to_logistic_regression.html">Logistic regression</a></li>
                 <li><a href="intro_to_decision_tress.html">Decision Trees</a></li>
                 <li><a href="intro_to_svm.html">Support Vector Machines (SVM)</a></li>
                 <li><a href="intro_to_naive_bayes.html">Naive Bayes</a></li>
@@ -137,7 +139,30 @@
                 <div class="number">
                     05
                 </div>
-                Common unsupervised data science methods
+                Regression methods
+            </summary>
+            In this section we'll go through some common data science techniques for modelling continuous target
+            variables, which is typically called regression. <br>
+            There are a number of algorithms that offer both classification and regression capabilities. However, some
+            algorithms only approximate regression as they still output a discrete set of output values, such as
+            decision trees where the output values are based on the end nodes of the tree (see the <a
+                href="intro_to_decision_trees.html">decision tree</a> section
+            for more details). These algorithms won't be covered and this is a non-exhaustive list of methods.<br>
+            Neural networks can also be used for regression by, for example, omitting an activation function on the
+            final output layer of a fully connected network (see the neural network section for more details)
+            <br><br>
+            <ol>
+                <li><a href="intro_to_linear_regression.html">Linear and polynomial regression</a></li>
+                <li><a href="intro_to_svmr.html">Support Vector Machines (SVM) for regression</a></li>
+            </ol>
+        </details>
+
+        <details class="item">
+            <summary class="title">
+                <div class="number">
+                    06
+                </div>
+                Clustering methods
             </summary>
             <ol>
                 <li><a href="kneighbours.html">K-nearest neighbours</a></li>
@@ -150,24 +175,12 @@
         <details class="item">
             <summary class="title">
                 <div class="number">
-                    06
+                    07
                 </div>
-                Basics building blocks of neural networks models
+                Neural networks
             </summary>
             <ol>
                 <li><a href="intro_to_nn.html">Basics of Neural networks</a></li>
-                <li><a href="hyperparameter_optimization.html">Hyper-parameter optimization</a></li>
-            </ol>
-        </details>
-
-        <details class="item">
-            <summary class="title">
-                <div class="number">
-                    07
-                </div>
-                Convolutional neural networks
-            </summary>
-            <ol>
                 <li><a href="conv_nn.html">Introduction to convolutional neural networks</a></li>
             </ol>
         </details>

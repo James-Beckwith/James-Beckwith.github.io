@@ -152,7 +152,7 @@ test = test.batch(8)</code></pre>
             we run it on data).
         </p>
 
-        <pre><code class="language-python">linear_model = tf.keras.Sequential([
+        <pre><code class="language-python">model = tf.keras.Sequential([
     layers.BatchNormalization(),
     layers.Dense(units=5, input_shape=[4,], activation='relu'),
     layers.Dense(units=3, activation='sigmoid')
@@ -177,7 +177,7 @@ test = test.batch(8)</code></pre>
             Which is why we have a final output layer with # of classes units.
         </p>
 
-        <pre><code class="language-python">linear_model.compile(
+        <pre><code class="language-python">model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=0.25),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
     metrics=['accuracy'])</code></pre>
@@ -196,7 +196,7 @@ test = test.batch(8)</code></pre>
         </p>
 
 
-        <pre><code class="language-python">history = linear_model.fit(
+        <pre><code class="language-python">history = model.fit(
     train,
     epochs=200,
     verbose=0,
@@ -209,8 +209,8 @@ test = test.batch(8)</code></pre>
                 documentation</a>.
         </p>
 
-        <pre><code class="language-python">evaluation = linear_model.evaluate(test)
-for name, metric in zip(linear_model.metrics_names, evaluation):
+        <pre><code class="language-python">evaluation = model.evaluate(test)
+for name, metric in zip(model.metrics_names, evaluation):
     print('test ' + name + ': ' + str(metric))
     </code></pre>
 
@@ -244,7 +244,7 @@ plot_loss(history)</code></pre>
             Now that we have a trained model we make predictions by passing in our new data.
         </p>
 
-        <pre><code class="language-python">linear_model.predict([[6.4,2.8,5.6, 2.2], [5.4, 3.4,1.7, 0.2], [5.9, 3.,  4.2, 1.5]])</code></pre>
+        <pre><code class="language-python">model.predict([[6.4,2.8,5.6, 2.2], [5.4, 3.4,1.7, 0.2], [5.9, 3.,  4.2, 1.5]])</code></pre>
 
         <pre><p class="knowledge_pyprint">array([[0.   , 0.   , 0.465],
     [1.   , 1.   , 0.039],
